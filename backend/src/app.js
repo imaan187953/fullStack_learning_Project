@@ -6,6 +6,7 @@ const authRoutes = require("./routes/auth.routes");
 const listRoutes = require("./routes/list.routes");
 const mediaRoutes = require("./routes/media.routes");
 const listItemRoutes = require("./routes/listItem.routes");
+const ratingRoutes = require("./routes/rating.routes");
 
 const app = express();
 
@@ -28,6 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/lists", listRoutes);
 app.use("/api/media", mediaRoutes);
 app.use("/api/lists", listItemRoutes);
+app.use("/api/ratings", ratingRoutes);
 
 
 module.exports = app;
