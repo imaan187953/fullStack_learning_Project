@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./routes/auth.routes");
+const listRoutes = require("./routes/list.routes");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 // Authentication Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/lists", listRoutes);
 
 
 module.exports = app;
