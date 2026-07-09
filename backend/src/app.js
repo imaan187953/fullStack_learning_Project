@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth.routes");
 const listRoutes = require("./routes/list.routes");
 const mediaRoutes = require("./routes/media.routes");
+const listItemRoutes = require("./routes/listItem.routes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/lists", listRoutes);
 app.use("/api/media", mediaRoutes);
+app.use("/api/lists", listItemRoutes);
 
 
 module.exports = app;
