@@ -5,13 +5,30 @@ const mediaSchema = new mongoose.Schema(
     tmdbId: {
       type: Number,
       required: true,
-      unique: true,
     },
 
     mediaType: {
       type: String,
-      enum: ["movie", "tv"],
+      enum: ["movie", "tv", "season"],
       required: true,
+    },
+
+    // Only used for seasons
+    tvId: {
+      type: Number,
+      default: null,
+    },
+
+    // Only used for seasons
+    seasonNumber: {
+      type: Number,
+      default: null,
+    },
+
+    // Only used for seasons
+    parentTitle: {
+      type: String,
+      default: null,
     },
 
     title: {
@@ -68,6 +85,16 @@ const mediaSchema = new mongoose.Schema(
       type: Number,
     },
 
+    numberOfSeasons: {
+  type: Number,
+  default: null,
+   },
+
+   numberOfEpisodes: {
+  type: Number,
+  default: null,
+   },
+
     status: {
       type: String,
     },
@@ -83,6 +110,17 @@ const mediaSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+  }
+);
+
+// A TMDB ID can exist for different media types (movie, tv, season)
+mediaSchema.index(
+  {
+    tmdbId: 1,
+    mediaType: 1,
+  },
+  {
+    unique: true,
   }
 );
 
