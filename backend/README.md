@@ -264,3 +264,85 @@ The AI analyzes:
 and generates personalized movie and TV show recommendations.
 
 ---
+
+---
+
+# 📋 CRUD Operations Summary
+
+| Module | Create | Read | Update | Delete |
+|---------|:------:|:----:|:------:|:------:|
+| 👤 User | ✅ | ✅ | ✅ | ✅ |
+| 📚 Lists | ✅ | ✅ | ✅ | ✅ |
+| 🔗 List Items | ✅ | ✅ | — | ✅ |
+| 🎬 Media | Cache | ✅ | — | — |
+| ⭐ Ratings | ✅ | ✅ | ✅ | ✅ |
+| ✍️ Reviews | ✅ | ✅ | ✅ | ✅ |
+
+> **Note:** The **List Items** module only supports **Create**, **Read**, and **Delete** operations. An update operation is not applicable because a `ListItem` only represents the relationship between a **List** and a **Media** item.
+
+---
+
+# 🌐 External API Integration
+
+## 🎬 TMDB API
+
+The backend integrates with **The Movie Database (TMDB)** to retrieve:
+
+- Movies
+- TV Shows
+- Seasons
+- Posters
+- Genres
+- Ratings
+- Popularity
+- Runtime
+
+Frequently accessed media is cached in **MongoDB** to reduce API requests and improve performance.
+
+### Google Gemini API
+
+Google Gemini is integrated to generate personalized movie and TV show recommendations based on a user's:
+
+- Lists
+- Ratings
+- Reviews
+
+Although testing was limited by API quota, the complete integration pipeline and service architecture were successfully implemented.
+
+---
+
+# 🔒 Security Features
+
+The backend incorporates several security practices:
+
+- 🔐 Password hashing using **bcrypt.js**
+- 🔑 JWT-based authentication
+- 🛡️ Protected API endpoints using authentication middleware
+- ✅ Unique username and email validation
+- 🗑️ Cascade deletion of user-related data during account deletion
+- ⚙️ Environment variables for sensitive configuration values
+
+---
+
+# 🧪 API Testing
+
+All backend APIs were tested using **Thunder Client**.
+
+The following functionalities were verified:
+
+- ✅ User Registration
+- ✅ User Login
+- ✅ JWT Authentication
+- ✅ CRUD Operations
+- ✅ TMDB API Integration
+- ✅ Protected Routes
+- ✅ MongoDB Data Storage
+- ✅ AI Recommendation Endpoint
+
+---
+
+# 📝 Conclusion
+
+The CineTrack backend was successfully developed using a modular RESTful architecture. It provides secure authentication, cloud database integration, movie and TV show management, personalized user libraries, ratings, reviews, TMDB integration, and AI-powered recommendations.
+
+The project emphasizes scalability, maintainability, and clean software design principles. It is fully prepared for frontend integration using **React**, enabling the development of a complete full-stack application.
