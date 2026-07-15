@@ -8,7 +8,7 @@ const mediaRoutes = require("./routes/media.routes");
 const listItemRoutes = require("./routes/listItem.routes");
 const ratingRoutes = require("./routes/rating.routes");
 const reviewRoutes = require("./routes/review.routes");
-const aiRecommendationRoutes = require("./routes/aiRecommendation.routes");
+const recommendationRoutes = require("./routes/recommendation.routes");
 
 const app = express();
 
@@ -33,6 +33,7 @@ app.use("/api/media", mediaRoutes);
 app.use("/api/lists", listItemRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/reviews", reviewRoutes);
-app.use("/api/ai", aiRecommendationRoutes);
+app.use("/api/recommendations", recommendationRoutes);
+
 
 module.exports = app;

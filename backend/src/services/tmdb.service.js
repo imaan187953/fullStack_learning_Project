@@ -34,6 +34,17 @@ const getTrendingMovies = async () => {
 
   return response.data;
 };
+// Popular Movies
+const getPopularMovies = async () => {
+  const response = await tmdb.get("/movie/popular");
+  return response.data;
+};
+
+// Top Rated Movies
+const getTopRatedMovies = async () => {
+  const response = await tmdb.get("/movie/top_rated");
+  return response.data;
+};
 
 /* ===========================
    TV SHOWS
@@ -61,6 +72,17 @@ const getTrendingTVShows = async () => {
 
   return response.data;
 };
+// Popular TV Shows
+const getPopularTVShows = async () => {
+  const response = await tmdb.get("/tv/popular");
+  return response.data;
+};
+
+// Top Rated TV Shows
+const getTopRatedTVShows = async () => {
+  const response = await tmdb.get("/tv/top_rated");
+  return response.data;
+};
 
 /* ===========================
    SEASONS
@@ -77,15 +99,19 @@ const getSeasonDetails = async (tvId, seasonNumber) => {
 
 module.exports = {
   // Movies
-  searchMovies,
-  getMovieDetails,
-  getTrendingMovies,
+searchMovies,
+getMovieDetails,
+getTrendingMovies,
+getPopularMovies,
+getTopRatedMovies,
 
-  // TV Shows
-  searchTVShows,
-  getTVDetails,
-  getTrendingTVShows,
+// TV
+searchTVShows,
+getTVDetails,
+getTrendingTVShows,
+getPopularTVShows,
+getTopRatedTVShows,
 
-  // Seasons
-  getSeasonDetails,
+// Seasons
+getSeasonDetails,
 };

@@ -3,11 +3,18 @@ const express = require("express");
 const router = express.Router();
 
 const protect = require("../middleware/auth.middleware");
+
 const {
   getRecommendations,
-} = require("../controllers/aiRecommendation.controller");
+} = require("../controllers/recommendation.controller");
 
-// AI Recommendations
-router.get("/", protect, getRecommendations);
+/**
+ * AI Recommendation Route
+ */
+router.get(
+  "/",
+  protect,
+  getRecommendations
+);
 
 module.exports = router;
