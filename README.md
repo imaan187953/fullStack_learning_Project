@@ -299,15 +299,220 @@ The backend integrates with **The Movie Database (TMDB)** to retrieve:
 
 Frequently accessed media is cached in **MongoDB** to reduce API requests and improve performance.
 
-### Google Gemini API
+# 🤖 AI Recommendation Module (RAG + Ollama + Qdrant)
 
-Google Gemini is integrated to generate personalized movie and TV show recommendations based on a user's:
+## Overview
 
-- Lists
+CineTrack uses a **fully local AI recommendation system** built with **Retrieval-Augmented Generation (RAG)**. The system analyzes user behavior, retrieves semantically similar movies from a vector database, and generates personalized recommendations using a locally hosted LLM.
+
+The architecture avoids external AI APIs, providing a **private, cost-effective, and offline recommendation engine**.
+
+---
+
+# 🏗️ AI Architecture
+
+```
+User Library
+(Ratings, Reviews, Lists)
+        │
+        ▼
+Preference Builder
+        │
+        ▼
+Embedding Generation
+(nomic-embed-text)
+        │
+        ▼
+Qdrant Vector Database
+        │
+        ▼
+Semantic Retrieval
+        │
+        ▼
+Prompt Builder
+        │
+        ▼
+Ollama (Qwen2.5)
+        │
+        ▼
+AI Recommendations
+```
+
+---
+
+# 🛠️ Technologies Used
+
+| Technology | Purpose |
+|------------|---------|
+| Ollama | Local LLM runtime |
+| Qwen2.5:3B | Recommendation generation |
+| nomic-embed-text | Text embeddings |
+| Qdrant | Vector similarity search |
+| Docker | Qdrant deployment |
+| TMDB API | Movie & TV metadata |
+| Node.js / Express | Backend API |
+| MongoDB | User data storage |
+
+---
+
+# 🔍 How RAG Works
+
+Instead of generating recommendations only from the model's knowledge, CineTrack retrieves relevant movie information first and then uses the LLM to generate recommendations from that context.
+
+Benefits:
+
+- Personalized recommendations
+- Reduced hallucinations
+- Explainable results
+- No external API dependency
+- Works with updated TMDB data
+
+---
+
+# 👤 User Preference Analysis
+
+The system creates a semantic profile from:
+
 - Ratings
 - Reviews
+- Custom lists
+- Favorite genres
+- Watching behavior
 
-Although testing was limited by API quota, the complete integration pipeline and service architecture were successfully implemented.
+Example:
+
+```
+User enjoys psychological thrillers,
+science fiction, mystery, and mind-bending stories.
+
+Favorite titles:
+- Interstellar
+- Arrival
+- Dark
+- Blade Runner 2049
+```
+
+This profile is converted into an embedding vector for semantic search.
+
+---
+
+# 🧠 Vector Knowledge Base
+
+CineTrack uses TMDB as the movie data source.
+
+An ingestion process:
+
+1. Fetches movie metadata from TMDB.
+2. Generates embeddings using `nomic-embed-text`.
+3. Stores vectors in Qdrant.
+
+Each vector contains:
+
+- TMDB ID
+- Title
+- Media Type
+- Genres
+- Overview
+- Rating
+- Popularity
+- Poster Path
+
+Currently, **900+ movie vectors** are indexed.
+
+---
+
+# 🔎 Semantic Retrieval Flow
+
+When a user requests recommendations:
+
+1. User preferences are converted into embeddings.
+2. Qdrant performs similarity search.
+3. Relevant movie candidates are retrieved.
+4. Candidates are passed to the LLM.
+5. Qwen2.5 generates structured recommendations.
+
+---
+
+# ✨ Prompt Engineering
+
+The recommendation prompt ensures that the AI:
+
+- Uses only retrieved movies
+- Does not invent titles
+- Explains recommendation reasons
+- Returns structured JSON output
+
+---
+
+# 🤖 Local AI Model
+
+**LLM:** Qwen2.5:3B  
+**Runtime:** Ollama
+
+Advantages:
+
+- No API costs
+- No rate limits
+- Offline execution
+- Improved privacy
+
+---
+
+# 🔌 API Endpoint
+
+### Get Recommendations
+
+```
+GET /api/recommendations
+```
+
+Authentication:
+
+```
+Authorization: Bearer <JWT Token>
+```
+
+Example Response:
+
+```json
+{
+  "success": true,
+  "data": {
+    "recommendations": [
+      {
+        "title": "Blade Runner 2049",
+        "mediaType": "movie",
+        "reason": "Matches your interest in science fiction and psychological storytelling.",
+        "confidence": 0.96
+      }
+    ]
+  }
+}
+```
+
+---
+
+# 🚀 Key Features
+
+✅ Fully local AI recommendation engine  
+✅ Retrieval-Augmented Generation (RAG)  
+✅ Semantic vector search using Qdrant  
+✅ Local LLM with Ollama  
+✅ Personalized recommendations  
+✅ Explainable AI responses  
+✅ Docker-based vector database setup  
+✅ Structured JSON output  
+
+---
+
+# 🔮 Future Improvements
+
+- Hybrid search (semantic + metadata filtering)
+- TV season-specific recommendations
+- Recommendation history tracking
+- User feedback learning loop
+- Larger local models
+- Personalized ranking algorithms
 
 ---
 
