@@ -1,10 +1,10 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-function ProtectedRoute({ children }) {
+function PublicRoute({ children }) {
   const { loading, isAuthenticated } = useAuth();
 
-  // Wait until we know if the user is logged in
+  // Prevent redirect while checking auth state
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black">
@@ -15,13 +15,12 @@ function ProtectedRoute({ children }) {
     );
   }
 
-  // User is not logged in
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  // Logged-in users shouldn't see login/register again
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />;
   }
 
-  // User is authenticated
   return children;
 }
 
-export default ProtectedRoute;
+export default PublicRoute;

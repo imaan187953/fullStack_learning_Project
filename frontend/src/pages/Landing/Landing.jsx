@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
 import HeroSection from "./HeroSection";
 import TrendingSection from "./TrendingSection";
 import CTASection from "./CTASection";
@@ -64,6 +65,8 @@ function Landing() {
             <FeaturesSection />
 
             <CTASection />
+
+            <Footer />
         </div>
     );
 }
