@@ -2,43 +2,70 @@ import { useState, useEffect } from "react";
 
 import Navbar from "../../components/layout/Navbar";
 import HeroSection from "./HeroSection";
-import { getTrendingMovies } from "../../services/media.service";
+import TrendingSection from "./TrendingSection";
+import CTASection from "./CTASection";
+import FeaturesSection from "./FeaturesSection";
+
+import {
+    getTrendingMovies,
+    getTrendingTV,
+} from "../../services/media.service";
 
 function Landing() {
-  const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
+    const [movies, setMovies] = useState([]);
+    const [tvShows, setTvShows] = useState([]);
 
-  useEffect(() => {
-    const fetchTrending = async () => {
-      try {
-        const data = await getTrendingMovies();
+    const [loading, setLoading] = useState(true);
 
-        setMovies(data.results);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        const fetchLandingData = async () => {
+            try {
+                const [movieResponse, tvResponse] = await Promise.all([
+                    getTrendingMovies(),
+                    getTrendingTV(),
+                ]);
 
-    fetchTrending();
-  }, []);
+                setMovies(movieResponse.results);
+                setTvShows(tvResponse.results);
+            } catch (error) {
+                console.error("Failed to load landing page:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  if (loading) {
+        fetchLandingData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-black text-white">
+                Loading...
+            </div>
+        );
+    }
+
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
-        Loading...
-      </div>
+        <div className="min-h-screen bg-black">
+            <Navbar />
+
+            <HeroSection movie={movies[0]} />
+
+            <TrendingSection
+                title="🔥 Trending Movies"
+                movies={movies}
+            />
+
+            <TrendingSection
+                title="📺 Trending TV Shows"
+                movies={tvShows}
+            />
+
+            <FeaturesSection />
+
+            <CTASection />
+        </div>
     );
-  }
-
-  return (
-    <div className="bg-black">
-      <Navbar />
-
-      <HeroSection movie={movies[0]} />
-    </div>
-  );
 }
 
 export default Landing;
