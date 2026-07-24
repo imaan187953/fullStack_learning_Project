@@ -1,13 +1,20 @@
 const List = require("../models/list.model");
 const Media = require("../models/media.model");
 const ListItem = require("../models/listItem.model");
-const { getMovieDetails } = require("../services/tmdb.service");
+const {
+  getMovieDetails,
+  getTVDetails,
+} = require("../services/tmdb.service");
 
 // Add Movie to List
 const addItem = async (req, res) => {
   try {
     const { listId } = req.params;
-    const { tmdbId, notes } = req.body;
+    const {
+      tmdbId,
+      mediaType = "movie",
+      notes,
+    } = req.body;
 
     // Check list ownership
     const list = await List.findOne({
@@ -25,7 +32,7 @@ const addItem = async (req, res) => {
     // Find media in cache
     let media = await Media.findOne({
       tmdbId,
-      mediaType: "movie",
+      mediaType,
     });
 
     // Fetch from TMDB if not cached
