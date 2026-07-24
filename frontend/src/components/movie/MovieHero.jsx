@@ -11,7 +11,10 @@ import AddToListButton from "../list/AddToListButton";
 const IMAGE = "https://image.tmdb.org/t/p/original";
 const POSTER = "https://image.tmdb.org/t/p/w500";
 
-function MovieHero({ movie }) {
+function MovieHero({
+    movie,
+    onAddToList,
+}) {
     if (!movie) return null;
 
     return (
@@ -75,10 +78,6 @@ function MovieHero({ movie }) {
                         </div>
                     </div>
 
-                    <div className="mb-10">
-                        <AddToListButton media={movie} />
-                    </div>
-
                     <h2 className="mb-3 text-2xl font-semibold">
                         Overview
                     </h2>
@@ -86,6 +85,15 @@ function MovieHero({ movie }) {
                     <p className="max-w-4xl text-lg leading-8 text-gray-300">
                         {movie.overview}
                     </p>
+
+                    <div className="mt-10">
+                        <button
+                            onClick={onAddToList}
+                            className="rounded-xl bg-red-600 px-6 py-3 font-semibold text-white transition hover:bg-red-700"
+                        >
+                            + Add To List
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import SearchPage from "./pages/Search/Search";
 import MoviePage from "./pages/Movie/MoviePage";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import TVPage from "./pages/TV/TVPage";
 
 function App() {
   return (
@@ -29,6 +30,15 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+      <Route
+  path="/tv/:id"
+  element={
+    <ProtectedRoute>
+      <TVPage />
+    </ProtectedRoute>
+  }
+/>
 
       
            
