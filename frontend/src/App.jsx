@@ -7,6 +7,7 @@ import SearchPage from "./pages/Search/Search";
 import MoviePage from "./pages/Movie/MoviePage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import TVPage from "./pages/TV/TVPage";
+import ListsPage from "./pages/Lists/ListsPage";
 
 function App() {
   return (
@@ -32,16 +33,25 @@ function App() {
       />
 
       <Route
-  path="/tv/:id"
-  element={
-    <ProtectedRoute>
-      <TVPage />
-    </ProtectedRoute>
-  }
-/>
+        path="/tv/:id"
+        element={
+          <ProtectedRoute>
+            <TVPage />
+          </ProtectedRoute>
+        }
+      />
 
-      
-           
+      <Route
+        path="/lists"
+        element={
+          <ProtectedRoute>
+            <ListsPage />
+          </ProtectedRoute>
+        }
+      />
+
+
+
     </Routes>
   );
 }
