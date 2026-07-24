@@ -10,6 +10,7 @@ const ratingRoutes = require("./routes/rating.routes");
 const reviewRoutes = require("./routes/review.routes");
 const recommendationRoutes = require("./routes/recommendation.routes");
 
+
 const app = express();
 
 // Middleware
