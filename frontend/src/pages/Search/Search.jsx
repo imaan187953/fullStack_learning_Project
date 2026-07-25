@@ -21,43 +21,46 @@ function Search() {
   const [error, setError] = useState("");
 
   const handleSearch = async () => {
+  if (!query.trim()) {
+    setResults([]);
+    return;
+  }
 
-    if (!query.trim()) {
-      setResults([]);
-      return;
+  try {
+    setLoading(true);
+    setError("");
+
+    let data;
+
+    if (type === "movie") {
+      data = await searchMovies(query);
+
+      setResults(
+        (data.results || []).map((movie) => ({
+          ...movie,
+          media_type: "movie",
+        }))
+      );
+    } else {
+      data = await searchTVShows(query);
+
+      setResults(
+        (data.results || []).map((tv) => ({
+          ...tv,
+          media_type: "tv",
+        }))
+      );
     }
+  } catch (err) {
+    console.error(err);
 
-    try {
+    setError("Failed to search.");
 
-      setLoading(true);
-
-      setError("");
-
-      let data;
-
-      if (type === "movie") {
-        data = await searchMovies(query);
-      } else {
-        data = await searchTVShows(query);
-      }
-
-      setResults(data.results || []);
-
-    } catch (err) {
-
-      console.error(err);
-
-      setError("Failed to search.");
-
-      setResults([]);
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  };
+    setResults([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   /*
       Debounce Search

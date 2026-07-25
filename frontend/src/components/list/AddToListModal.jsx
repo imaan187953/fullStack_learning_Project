@@ -41,6 +41,11 @@ function AddToListModal({
     try {
       setAdding(listId);
 
+      console.log({
+  tmdbId,
+  mediaType,
+});
+
       await addItemToList(listId, {
         tmdbId,
         mediaType,

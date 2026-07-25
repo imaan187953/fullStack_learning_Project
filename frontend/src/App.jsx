@@ -8,6 +8,7 @@ import MoviePage from "./pages/Movie/MoviePage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import TVPage from "./pages/TV/TVPage";
 import ListsPage from "./pages/Lists/ListsPage";
+import ListDetailPage from "./pages/Lists/ListDetailsPage";
 
 function App() {
   return (
@@ -46,6 +47,24 @@ function App() {
         element={
           <ProtectedRoute>
             <ListsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/lists"
+        element={
+          <ProtectedRoute>
+            <ListsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/lists/:id"
+        element={
+          <ProtectedRoute>
+            <ListDetailPage />
           </ProtectedRoute>
         }
       />
