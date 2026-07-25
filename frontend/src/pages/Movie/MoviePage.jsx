@@ -6,7 +6,13 @@ import { getMovieDetails } from "../../services/media.service";
 import MovieHero from "../../components/movie/MovieHero";
 import AddToListModal from "../../components/list/AddToListModal";
 
+import MediaTabs from "../../components/media/MediaTabs";
+import InteractionSection from "../../components/interaction/InteractionSection";
+import RatingSummary from "../../components/ratings/RatingSummary";
+import ReviewsSection from "../../components/reviews/ReviewsSection";
+
 function MoviePage() {
+
   const { id } = useParams();
 
   const [movie, setMovie] = useState(null);
@@ -18,9 +24,17 @@ function MoviePage() {
   const [showAddModal, setShowAddModal] =
     useState(false);
 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+
+  const [activeTab, setActiveTab] =
+    useState("overview");
+
   useEffect(() => {
+
     const fetchMovie = async () => {
+
       try {
+
         setLoading(true);
 
         const response = await getMovieDetails(id);
@@ -36,9 +50,11 @@ function MoviePage() {
         setLoading(false);
 
       }
+
     };
 
     fetchMovie();
+
   }, [id]);
 
   if (loading) {
@@ -67,13 +83,38 @@ function MoviePage() {
         }
       />
 
-      <AddToListModal
-        isOpen={showAddModal}
-        onClose={() =>
-          setShowAddModal(false)
+      <MediaTabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+
+        overview={
+          <InteractionSection
+            onAddToList={() => setShowAddModal(true)}
+
+            onRate={() => {
+              setActiveTab("ratings");
+            }}
+
+            onReview={() => {
+              setActiveTab("reviews");
+              setShowReviewModal(true);
+            }}
+          />
         }
-        tmdbId={movie.tmdbId}
-        mediaType="movie"
+
+        reviews={
+          <ReviewsSection
+            mediaId={movie._id}
+            showModal={showReviewModal}
+            onCloseModal={() => setShowReviewModal(false)}
+          />
+        }
+
+        ratings={
+          <RatingSummary
+            mediaId={movie._id}
+          />
+        }
       />
 
     </main>

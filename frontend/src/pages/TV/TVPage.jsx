@@ -6,19 +6,36 @@ import { getTVDetails } from "../../services/media.service";
 import TVHero from "../../components/tv/TVHero";
 import AddToListModal from "../../components/list/AddToListModal";
 
+import MediaTabs from "../../components/media/MediaTabs";
+import InteractionSection from "../../components/interaction/InteractionSection";
+import RatingSummary from "../../components/ratings/RatingSummary";
+import ReviewsSection from "../../components/reviews/ReviewsSection";
+
 function TVPage() {
+
   const { id } = useParams();
 
   const [tv, setTV] = useState(null);
+
   const [loading, setLoading] = useState(true);
+
   const [error, setError] = useState("");
 
   const [showAddModal, setShowAddModal] =
     useState(false);
 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+
+
+  const [activeTab, setActiveTab] =
+    useState("overview");
+
   useEffect(() => {
+
     const fetchTV = async () => {
+
       try {
+
         setLoading(true);
 
         const response = await getTVDetails(id);
@@ -34,9 +51,11 @@ function TVPage() {
         setLoading(false);
 
       }
+
     };
 
     fetchTV();
+
   }, [id]);
 
   if (loading) {
@@ -65,13 +84,38 @@ function TVPage() {
         }
       />
 
-      <AddToListModal
-        isOpen={showAddModal}
-        onClose={() =>
-          setShowAddModal(false)
+      <MediaTabs
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+
+        overview={
+          <InteractionSection
+            onAddToList={() => setShowAddModal(true)}
+
+            onRate={() => {
+              setActiveTab("ratings");
+            }}
+
+            onReview={() => {
+              setActiveTab("reviews");
+              setShowReviewModal(true);
+            }}
+          />
         }
-        tmdbId={tv.tmdbId}
-        mediaType="tv"
+
+        reviews={
+          <ReviewsSection
+            mediaId={tv._id}
+            showModal={showReviewModal}
+            onCloseModal={() => setShowReviewModal(false)}
+          />
+        }
+
+        ratings={
+          <RatingSummary
+            mediaId={tv._id}
+          />
+        }
       />
 
     </main>
