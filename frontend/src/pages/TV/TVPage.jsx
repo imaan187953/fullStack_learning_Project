@@ -118,6 +118,13 @@ function TVPage() {
         }
       />
 
+      <AddToListModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        tmdbId={tv.tmdbId}
+        mediaType="tv"
+      />
+
     </main>
   );
 }

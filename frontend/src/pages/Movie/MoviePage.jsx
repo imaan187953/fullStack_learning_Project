@@ -117,6 +117,13 @@ function MoviePage() {
         }
       />
 
+      <AddToListModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        tmdbId={movie.tmdbId}
+        mediaType="movie"
+      />
+
     </main>
   );
 }

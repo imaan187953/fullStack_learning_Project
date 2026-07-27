@@ -9,6 +9,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import TVPage from "./pages/TV/TVPage";
 import ListsPage from "./pages/Lists/ListsPage";
 import ListDetailPage from "./pages/Lists/ListDetailsPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 function App() {
   return (
@@ -65,6 +66,15 @@ function App() {
         element={
           <ProtectedRoute>
             <ListDetailPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         }
       />
