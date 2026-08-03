@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import * as authService from "../services/auth.service";
 
 const AuthContext = createContext();
@@ -63,8 +63,13 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, [token]);
 
+  const updateUser = useCallback((updatedUser) => {
+    setUser(updatedUser);
+  }, []);
+
   const value = {
     user,
+    updateUser,
     token,
     loading,
     login,

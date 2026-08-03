@@ -11,7 +11,7 @@ function AuthSidePanel() {
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      {/* Overlay */}
+      {/* Overlay */}c
       <div className="absolute inset-0 bg-linear-to-br from-black/80 via-black/70 to-red-900/60" />
 
       {/* Content */}
