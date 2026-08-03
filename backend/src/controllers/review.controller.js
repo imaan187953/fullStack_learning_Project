@@ -189,10 +189,37 @@ const deleteReview = async (req, res) => {
 
 };
 
+// Get All Reviews of Logged-in User
+const getMyReviews = async (req, res) => {
+  try {
+    const reviews = await Review.find({
+      user: req.user._id,
+    })
+      .populate("media")
+      .sort({
+        createdAt: -1,
+      });
+
+    res.status(200).json({
+      success: true,
+      count: reviews.length,
+      reviews,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
 module.exports = {
   createReview,
   getMovieReviews,
   getMyReview,
+  getMyReviews,
   updateReview,
   deleteReview,
 };

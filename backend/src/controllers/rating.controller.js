@@ -212,9 +212,34 @@ const getAverageRating = async (req, res) => {
 
 };
 
+// Get All Ratings of Logged-in User
+const getMyRatings = async (req, res) => {
+    try {
+        const ratings = await Rating.find({
+            user: req.user._id,
+        })
+            .populate("media")
+            .sort({
+                createdAt: -1,
+            });
+
+        res.status(200).json({
+            success: true,
+            count: ratings.length,
+            ratings,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
 module.exports = {
     createRating,
     getMyRating,
+    getMyRatings,
     updateRating,
     deleteRating,
     getAverageRating

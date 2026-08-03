@@ -51,3 +51,11 @@ export const getAverageRating = async (mediaId) => {
 
   return response.data;
 };
+
+/**
+ * Get all ratings of logged-in user
+ */
+export const getMyRatings = async () => {
+  const response = await api.get("/ratings/my");
+  return response.data;
+};

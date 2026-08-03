@@ -6,6 +6,9 @@ import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import ProfileHeader from "../../components/profile/ProfileHeader";
 import EditProfileModal from "../../components/profile/EditProfileModal";
+import ProfileListsSection from "../../components/profile/ProfileListsSection";
+import ProfileReviewsSection from "../../components/profile/ProfileReviewsSection";
+import ProfileRatingsSection from "../../components/profile/ProfileRatingsSection";
 
 function ProfilePage() {
 
@@ -35,43 +38,12 @@ function ProfilePage() {
                     onEdit={() => setShowEditModal(true)}
                 />
 
-                {/* Next Iterations */}
+                <ProfileListsSection />
 
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
+                <ProfileReviewsSection />
 
-                    <h2 className="text-2xl font-bold text-white">
-                        My Lists
-                    </h2>
+                <ProfileRatingsSection />
 
-                    <p className="mt-3 text-gray-400">
-                        Coming in the next iteration...
-                    </p>
-
-                </div>
-
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
-
-                    <h2 className="text-2xl font-bold text-white">
-                        My Reviews
-                    </h2>
-
-                    <p className="mt-3 text-gray-400">
-                        Coming in the next iteration...
-                    </p>
-
-                </div>
-
-                <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
-
-                    <h2 className="text-2xl font-bold text-white">
-                        My Ratings
-                    </h2>
-
-                    <p className="mt-3 text-gray-400">
-                        Coming in the next iteration...
-                    </p>
-
-                </div>
 
             </div>
 

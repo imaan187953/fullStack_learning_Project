@@ -10,6 +10,7 @@ import TVPage from "./pages/TV/TVPage";
 import ListsPage from "./pages/Lists/ListsPage";
 import ListDetailPage from "./pages/Lists/ListDetailsPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
+import MyReviewsPage from "./pages/Profile/MyReviewsPage";
 
 function App() {
   return (
@@ -77,6 +78,11 @@ function App() {
             <ProfilePage />
           </ProtectedRoute>
         }
+      />
+
+      <Route
+        path="/profile/reviews"
+        element={<MyReviewsPage />}
       />
 
 

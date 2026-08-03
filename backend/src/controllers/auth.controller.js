@@ -305,10 +305,38 @@ const deleteAccount = async (req, res) => {
   }
 };
 
+// Get Profile Statistics
+const getProfileStats = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const [lists, reviews, ratings] = await Promise.all([
+      List.countDocuments({ owner: userId }),
+      Review.countDocuments({ user: userId }),
+      Rating.countDocuments({ user: userId }),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        lists,
+        reviews,
+        ratings,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
   updateProfile,
   deleteAccount,
+  getProfileStats,
 };

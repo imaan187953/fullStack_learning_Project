@@ -7,6 +7,7 @@ const protect = require("../middleware/auth.middleware");
 const {
     createRating,
     getMyRating,
+    getMyRatings,
     updateRating,
     deleteRating,
     getAverageRating
@@ -15,6 +16,8 @@ const {
 router.use(protect);
 
 router.post("/", createRating);
+
+router.get("/my", getMyRatings);
 
 router.get("/:mediaId", getMyRating);
 

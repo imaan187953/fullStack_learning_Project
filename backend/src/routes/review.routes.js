@@ -8,6 +8,7 @@ const {
   createReview,
   getMovieReviews,
   getMyReview,
+  getMyReviews,
   updateReview,
   deleteReview,
 } = require("../controllers/review.controller");
@@ -19,6 +20,8 @@ router.get("/media/:mediaId", getMovieReviews);
 router.use(protect);
 
 router.post("/", createReview);
+
+router.get("/my", getMyReviews);
 
 router.get("/my/:mediaId", getMyReview);
 

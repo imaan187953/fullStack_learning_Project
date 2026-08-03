@@ -49,3 +49,11 @@ export const deleteReview = async (reviewId) => {
 
   return response.data;
 };
+
+/**
+ * Get all reviews of logged-in user
+ */
+export const getMyReviews = async () => {
+  const response = await api.get("/reviews/my");
+  return response.data;
+};

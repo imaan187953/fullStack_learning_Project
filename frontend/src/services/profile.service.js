@@ -11,3 +11,11 @@ export const deleteAccount = async () => {
 
   return response.data;
 };
+
+/**
+ * Get profile statistics
+ */
+export const getProfileStats = async () => {
+  const response = await api.get("/users/profile/stats");
+  return response.data;
+};
