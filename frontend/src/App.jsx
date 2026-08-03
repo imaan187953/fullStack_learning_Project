@@ -11,6 +11,7 @@ import ListsPage from "./pages/Lists/ListsPage";
 import ListDetailPage from "./pages/Lists/ListDetailsPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import MyReviewsPage from "./pages/Profile/MyReviewsPage";
+import MyRatingsPage from "./pages/Profile/MyRatingsPage";
 
 function App() {
   return (
@@ -83,6 +84,11 @@ function App() {
       <Route
         path="/profile/reviews"
         element={<MyReviewsPage />}
+      />
+
+      <Route
+        path="/profile/ratings"
+        element={<MyRatingsPage />}
       />
 
 

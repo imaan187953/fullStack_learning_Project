@@ -37,7 +37,7 @@ function ProfileRatingsSection() {
         </div>
 
         <Link
-          to="/ratings"
+          to="/profile/ratings"
           className="rounded-full bg-zinc-800 p-2 transition hover:bg-red-600"
         >
           <ChevronRight className="text-white" size={22} />
