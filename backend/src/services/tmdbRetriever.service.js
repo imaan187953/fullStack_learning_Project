@@ -80,11 +80,8 @@ const resolveGenres = (genreIds, type) => {
 
 const normalizeMovie = (movie) => ({
   tmdbId: movie.id,
-
   mediaType: "movie",
-
   title: movie.title,
-
   overview: movie.overview,
 
   genres: resolveGenres(
@@ -93,20 +90,16 @@ const normalizeMovie = (movie) => ({
   ),
 
   release_date: movie.release_date,
-
   vote_average: movie.vote_average,
+  original_language: movie.original_language,
 
-  original_language:
-    movie.original_language,
+  poster_path: movie.poster_path || null,
 });
 
 const normalizeTV = (tv) => ({
   tmdbId: tv.id,
-
   mediaType: "tv",
-
   title: tv.name,
-
   overview: tv.overview,
 
   genres: resolveGenres(
@@ -115,11 +108,10 @@ const normalizeTV = (tv) => ({
   ),
 
   first_air_date: tv.first_air_date,
-
   vote_average: tv.vote_average,
+  original_language: tv.original_language,
 
-  original_language:
-    tv.original_language,
+  poster_path: tv.poster_path || null,
 });
 
 const normalizeSeason = (
@@ -149,6 +141,9 @@ const normalizeSeason = (
     season.vote_average || 0,
 
   original_language: "Unknown",
+
+  poster_path:
+    season.poster_path || null,
 });
 
 /* =====================================================

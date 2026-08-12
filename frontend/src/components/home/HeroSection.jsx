@@ -54,7 +54,7 @@ function HeroSection() {
           </button>
 
           <button
-            onClick={() => navigate("/recommendations")}
+            onClick={() => navigate("/ai")}
             className="flex items-center gap-3 rounded-xl border border-zinc-700 bg-zinc-900 px-6 py-4 text-white transition hover:border-red-500"
           >
             <Sparkles size={20} />

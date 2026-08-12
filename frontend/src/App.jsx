@@ -12,6 +12,7 @@ import ListDetailPage from "./pages/Lists/ListDetailsPage";
 import ProfilePage from "./pages/Profile/ProfilePage";
 import MyReviewsPage from "./pages/Profile/MyReviewsPage";
 import MyRatingsPage from "./pages/Profile/MyRatingsPage";
+import AIRecommendationPage from "./pages/AI/AIRecommendationPage";
 
 function App() {
   return (
@@ -89,6 +90,15 @@ function App() {
       <Route
         path="/profile/ratings"
         element={<MyRatingsPage />}
+      />
+
+      <Route
+        path="/ai"
+        element={
+          <ProtectedRoute>
+            <AIRecommendationPage />
+          </ProtectedRoute>
+        }
       />
 
 

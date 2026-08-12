@@ -64,12 +64,12 @@ function Home() {
         <AIRecommendationSection />
 
         <TrendingSection
-          title="🔥 Trending Movies"
+          title=" Trending Movies"
           movies={movies}
         />
 
         <TrendingSection
-          title="📺 Trending TV Shows"
+          title=" Trending TV Shows"
           movies={tvShows}
         />
 

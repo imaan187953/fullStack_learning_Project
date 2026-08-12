@@ -1,181 +1,270 @@
 const {
-  buildLibraryProfile,
-  buildProfileDocument,
+    buildLibraryProfile,
+    buildProfileDocument,
 } = require("./libraryProfile.service");
 
 /**
  * Builds the user's semantic preference document.
- * This document will later be embedded and used
- * as the query for Qdrant semantic search.
+ *
+ * Ratings, reviews, and list items are all used
+ * as signals of the user's entertainment taste.
  */
 const buildUserPreferences = async (userId) => {
 
-  // Step 1: Get the user's library profile
-  const profile = await buildLibraryProfile(userId);
+    // ==========================================
+    // STEP 1: Get complete user profile
+    // ==========================================
+
+    const profile =
+        await buildLibraryProfile(userId);
 
 
-  // Step 2: Convert it into a text document
-  const profileDocument = buildProfileDocument(profile);
+    // ==========================================
+    // STEP 2: Build semantic profile document
+    // ==========================================
+
+    const profileDocument =
+        buildProfileDocument(profile);
 
 
-  // Step 3: Calculate statistics
+    // ==========================================
+    // STEP 3: Calculate statistics
+    // ==========================================
 
-  const totalRatings = profile.ratings.length;
-  const totalReviews = profile.reviews.length;
-  const totalLists = profile.lists.length;
+    const totalRatings =
+        profile.ratings.length;
 
+    const totalReviews =
+        profile.reviews.length;
 
-  // Step 4: Count favorite genres
-
-  const genreFrequency = {};
-
-  profile.ratings.forEach((item) => {
-
-    if (!item.media || !item.media.genres)
-      return;
+    const totalLists =
+        profile.lists.length;
 
 
-    item.media.genres.forEach((genre) => {
+    // ==========================================
+    // STEP 4: Calculate favorite genres
+    //
+    // Ratings = strong signal
+    // Reviews = strong signal
+    // Lists = meaningful signal
+    // ==========================================
 
-      const genreName =
-        typeof genre === "string"
-          ? genre
-          : genre.name;
+    const genreFrequency = {};
 
 
-      genreFrequency[genreName] =
-        (genreFrequency[genreName] || 0) + 1;
+    // ------------------------------------------
+    // Genres from highly rated media
+    // ------------------------------------------
 
+    profile.ratings.forEach((item) => {
+
+        if (!item.media?.genres) return;
+
+        item.media.genres.forEach((genre) => {
+
+            const genreName =
+                typeof genre === "string"
+                    ? genre
+                    : genre.name;
+
+            if (!genreName) return;
+
+            // Strong signal
+            genreFrequency[genreName] =
+                (genreFrequency[genreName] || 0) + 3;
+        });
     });
 
-  });
+
+    // ------------------------------------------
+    // Genres from reviewed media
+    // ------------------------------------------
+
+    profile.reviews.forEach((item) => {
+
+        if (!item.media?.genres) return;
+
+        item.media.genres.forEach((genre) => {
+
+            const genreName =
+                typeof genre === "string"
+                    ? genre
+                    : genre.name;
+
+            if (!genreName) return;
+
+            // Strong signal
+            genreFrequency[genreName] =
+                (genreFrequency[genreName] || 0) + 2;
+        });
+    });
 
 
-  const favoriteGenres =
-    Object.entries(genreFrequency)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map((item) => item[0]);
+    // ------------------------------------------
+    // Genres from user's lists
+    // ------------------------------------------
+
+    profile.listItems.forEach((item) => {
+
+        if (!item.media?.genres) return;
+
+        item.media.genres.forEach((genre) => {
+
+            const genreName =
+                typeof genre === "string"
+                    ? genre
+                    : genre.name;
+
+            if (!genreName) return;
+
+            // Meaningful signal
+            genreFrequency[genreName] =
+                (genreFrequency[genreName] || 0) + 2;
+        });
+    });
 
 
+    // ------------------------------------------
+    // Top 5 genres
+    // ------------------------------------------
 
-  // Step 5: Detect new user (cold start)
-
-  const isNewUser =
-    totalRatings === 0 &&
-    totalReviews === 0 &&
-    totalLists === 0;
-
-
-
-  // Step 6: Create preference document
-
-  let preferenceDocument;
+    const favoriteGenres =
+        Object.entries(genreFrequency)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([genre]) => genre);
 
 
-  if (isNewUser) {
+    // ==========================================
+    // STEP 5: Cold-start detection
+    // ==========================================
 
-    preferenceDocument = `
+    const isNewUser =
+        totalRatings === 0 &&
+        totalReviews === 0 &&
+        totalLists === 0;
 
+
+    // ==========================================
+    // STEP 6: Build final preference document
+    // ==========================================
+
+    let preferenceDocument;
+
+
+    if (isNewUser) {
+
+        preferenceDocument = `
 You are analyzing a new CineTrack user.
 
 The user has no ratings,
 no reviews,
 and no custom lists.
 
-There is no available information about this user's entertainment preferences.
+There is no available information about
+this user's entertainment preferences.
 
 This is a cold-start recommendation scenario.
 
 Do not assume:
+
 - favorite genres
 - favorite themes
 - preferred storytelling styles
 - viewing habits
 
-Only provide general recommendations suitable for a new user.
-
+Only provide general recommendations suitable
+for a new user.
 `;
 
-  } else {
+    } else {
 
+        preferenceDocument = `
+You are analyzing a CineTrack user's
+entertainment preferences.
 
-    preferenceDocument = `
-
-You are analyzing a CineTrack user's entertainment preferences.
-
-
-=========================
-PROFILE SUMMARY
-=========================
+USER ACTIVITY SUMMARY
 
 Highly Rated Titles:
 ${totalRatings}
 
-
 Written Reviews:
 ${totalReviews}
 
-
 Custom Lists:
 ${totalLists}
-
 
 Favorite Genres:
 ${favoriteGenres.join(", ") || "Unknown"}
 
 
+IMPORTANT TASTE SIGNALS
 
-=========================
-USER LIBRARY
-=========================
+The user's entertainment taste should be
+understood using ALL available signals.
+
+Highly rated media represents strong explicit
+interest.
+
+Reviewed media represents titles the user
+actively engaged with.
+
+Listed media represents titles the user
+intentionally saved or organized.
+
+The user can have multiple different interests.
+
+Do NOT assume that one highly rated title
+represents the user's entire taste.
+
+Look for patterns across:
+
+- genres
+- themes
+- tone
+- storytelling style
+- character types
+- relationships
+- emotional style
+- entertainment preferences
+
 
 ${profileDocument}
 
 
+Use the complete profile to understand
+the user's overall taste.
 
-=========================
-GOAL
-=========================
-
-Understand the user's taste,
-favorite genres,
-preferred themes,
-preferred storytelling style,
-and entertainment interests.
-
-This document will be used for semantic retrieval.
-
+This document will be used as the semantic
+query for movie and TV recommendation retrieval.
 `;
-
-  }
-
+    }
 
 
-  // Step 7: Return data
+    // ==========================================
+    // STEP 7: Return data
+    // ==========================================
 
-  return {
+    return {
 
-    preferenceDocument,
+        preferenceDocument,
 
-    favoriteGenres,
+        favoriteGenres,
 
-    statistics: {
+        statistics: {
 
-      ratings: totalRatings,
+            ratings: totalRatings,
 
-      reviews: totalReviews,
+            reviews: totalReviews,
 
-      lists: totalLists,
+            lists: totalLists,
 
-    },
+        },
 
-  };
-
+    };
 };
 
 
-
 module.exports = {
-  buildUserPreferences,
+    buildUserPreferences,
 };

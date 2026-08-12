@@ -68,13 +68,19 @@ const upsertMedia = async (media, embedding, document) => {
             overview: media.overview,
             genres: media.genres,
             document,
+
             releaseDate:
               media.release_date ||
               media.first_air_date ||
               media.air_date ||
               null,
+
             voteAverage: media.vote_average,
+
             language: media.original_language,
+
+            posterPath:
+              media.poster_path || null,
           },
         },
       ],

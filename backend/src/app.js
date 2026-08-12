@@ -9,6 +9,7 @@ const listItemRoutes = require("./routes/listItem.routes");
 const ratingRoutes = require("./routes/rating.routes");
 const reviewRoutes = require("./routes/review.routes");
 const recommendationRoutes = require("./routes/recommendation.routes");
+const aiChatRoutes = require("./routes/aiChat.routes");
 
 
 const app = express();
@@ -23,7 +24,7 @@ app.use(cookieParser());
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "Welcome to CineTrack API 🚀",
+    message: "Welcome to CineTrack API ",
   });
 });
 
@@ -35,6 +36,7 @@ app.use("/api/lists", listItemRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/recommendations", recommendationRoutes);
+app.use("/api/ai/chat", aiChatRoutes);
 
 
 module.exports = app;

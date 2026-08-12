@@ -36,7 +36,7 @@ function Navbar() {
               </Link>
 
               <Link
-                to="/recommendations"
+                to="/ai"
                 className="text-gray-300 transition hover:text-white"
               >
                 AI

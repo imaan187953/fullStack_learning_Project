@@ -47,6 +47,29 @@ const removeDuplicates = (movies) => {
   });
 };
 
+/**
+ * Attach metadata from Qdrant to AI recommendations
+ */
+const enrichRecommendations = (
+  recommendations,
+  retrievedMedia
+) => {
+  return recommendations.map((recommendation) => {
+    const matchedMedia = retrievedMedia.find(
+      (media) =>
+        String(media.tmdbId) ===
+        String(recommendation.tmdbId)
+    );
+
+    return {
+      ...recommendation,
+
+      posterPath:
+        matchedMedia?.posterPath || null,
+    };
+  });
+};
+
 
 
 /**
@@ -208,23 +231,25 @@ const generateRecommendations = async (userId) => {
      * Final Response
      */
 
+    const enrichedRecommendations =
+      enrichRecommendations(
+        parsed,
+        retrievedMedia
+      );
+
     return {
 
       statistics,
 
       favoriteGenres,
 
-
       retrievedCount:
         retrievedMedia.length,
 
-
       retrievedMedia,
 
-
       recommendations:
-        parsed,
-
+        enrichedRecommendations,
 
       generatedAt:
         new Date(),

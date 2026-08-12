@@ -16,16 +16,14 @@ const retrieveRelevantMedia = async (
   limit = 10
 ) => {
   try {
-    /*
-     * Step 1
-     * Generate embedding
-     */
-    const vector = await createEmbedding(queryDocument);
 
-    /*
-     * Step 2
-     * Search Qdrant
-     */
+    console.log("\n========== QUERY SENT TO QDRANT ==========");
+    console.log(queryDocument);
+    console.log("===========================================\n");
+
+    const vector =
+      await createEmbedding(queryDocument);
+
     const searchResults =
       await qdrantClient.search("movies", {
         vector,
@@ -33,35 +31,64 @@ const retrieveRelevantMedia = async (
         with_payload: true,
       });
 
-    /*
-     * Step 3
-     * Normalize results
-     */
+    console.log("\n========== QDRANT RESULTS ==========");
+
+    searchResults.forEach((item, index) => {
+
+      const movie = item.payload;
+
+      console.log(
+        `${index + 1}. ${movie.title}`
+      );
+
+      console.log(
+        `   Score: ${item.score}`
+      );
+
+      console.log(
+        `   Genres: ${(movie.genres || [])
+          .map((g) => g.name || g)
+          .join(", ")
+        }`
+      );
+    });
+
+    console.log("====================================\n");
+
+    // keep the rest of your existing code...
+
+    // Existing normalization
     const media = searchResults.map((item) => ({
-      score: item.score,
+    score: item.score,
 
-      tmdbId: item.payload.tmdbId,
+    tmdbId: item.payload.tmdbId,
 
-      title: item.payload.title,
+    title: item.payload.title,
 
-      mediaType: item.payload.mediaType,
+    mediaType: item.payload.mediaType,
 
-      overview: item.payload.overview,
+    overview: item.payload.overview,
 
-      genres: item.payload.genres || [],
+    genres: item.payload.genres || [],
 
-      popularity:
+    popularity:
         item.payload.popularity || 0,
 
-      voteAverage:
+    voteAverage:
         item.payload.voteAverage || 0,
 
-      releaseDate:
+    releaseDate:
         item.payload.releaseDate || "",
 
-      posterPath:
+    posterPath:
         item.payload.posterPath || "",
-    }));
+
+    numberOfSeasons:
+        item.payload.numberOfSeasons || 0,
+
+    numberOfEpisodes:
+        item.payload.numberOfEpisodes || 0,
+}));
 
     return media;
 
