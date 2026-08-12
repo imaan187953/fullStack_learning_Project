@@ -1,6 +1,8 @@
 import axios from "axios";
 import { API_BASE_URL } from "../config/env";
 
+console.log("API_BASE_URL:", API_BASE_URL);
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -12,7 +14,7 @@ const api = axios.create({
  * Request Interceptor
  *
  * Automatically attaches the JWT token
- * to every outgoing request.
+ * to every outgoing request. 
  */
 api.interceptors.request.use(
   (config) => {
