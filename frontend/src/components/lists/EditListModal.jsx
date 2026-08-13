@@ -32,36 +32,66 @@ function EditListModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-
-      <div className="w-full max-w-lg rounded-2xl bg-zinc-900 p-6 shadow-2xl">
-
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/70
+        px-4
+        py-6
+        backdrop-blur-sm
+      "
+    >
+      <div
+        className="
+          max-h-[90vh]
+          w-full
+          max-w-lg
+          overflow-y-auto
+          rounded-2xl
+          border
+          border-zinc-800
+          bg-zinc-900
+          p-5
+          shadow-2xl
+          sm:p-6
+        "
+      >
         {/* Header */}
 
-        <div className="mb-6 flex items-center justify-between">
-
-          <h2 className="text-2xl font-bold text-white">
+        <div className="mb-5 flex items-center justify-between sm:mb-6">
+          <h2 className="text-lg font-bold text-white sm:text-xl">
             Edit List
           </h2>
 
           <button
+            type="button"
             onClick={onClose}
-            className="text-zinc-400 transition hover:text-white"
+            className="
+              rounded-full
+              p-1.5
+              text-zinc-400
+              transition
+              hover:bg-zinc-800
+              hover:text-white
+            "
           >
-            <X />
+            <X size={20} />
           </button>
-
         </div>
 
         <form
           onSubmit={handleSubmit}
-          className="space-y-5"
+          className="space-y-4 sm:space-y-5"
         >
-
           {/* Name */}
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-300">
+            <label className="mb-2 block text-xs text-zinc-300 sm:text-sm">
               List Name
             </label>
 
@@ -73,14 +103,27 @@ function EditListModal({
                   name: e.target.value,
                 })
               }
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white outline-none focus:border-red-500"
+              className="
+                w-full
+                rounded-lg
+                border
+                border-zinc-700
+                bg-zinc-800
+                px-3
+                py-2.5
+                text-sm
+                text-white
+                outline-none
+                transition
+                focus:border-red-500
+              "
             />
           </div>
 
           {/* Description */}
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-300">
+            <label className="mb-2 block text-xs text-zinc-300 sm:text-sm">
               Description
             </label>
 
@@ -93,20 +136,33 @@ function EditListModal({
                   description: e.target.value,
                 })
               }
-              className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-3 text-white outline-none focus:border-red-500"
+              className="
+                w-full
+                resize-none
+                rounded-lg
+                border
+                border-zinc-700
+                bg-zinc-800
+                px-3
+                py-2.5
+                text-sm
+                text-white
+                outline-none
+                transition
+                focus:border-red-500
+              "
             />
           </div>
 
           {/* Visibility */}
 
           <div>
-            <label className="mb-3 block text-sm text-zinc-300">
+            <label className="mb-3 block text-xs text-zinc-300 sm:text-sm">
               Visibility
             </label>
 
-            <div className="flex gap-6">
-
-              <label className="flex items-center gap-2 text-white">
+            <div className="flex gap-5">
+              <label className="flex items-center gap-2 text-sm text-white">
                 <input
                   type="radio"
                   value="private"
@@ -122,7 +178,7 @@ function EditListModal({
                 Private
               </label>
 
-              <label className="flex items-center gap-2 text-white">
+              <label className="flex items-center gap-2 text-sm text-white">
                 <input
                   type="radio"
                   value="public"
@@ -137,18 +193,28 @@ function EditListModal({
 
                 Public
               </label>
-
             </div>
           </div>
 
           {/* Footer */}
 
-          <div className="flex justify-end gap-3">
-
+          <div className="flex gap-2 pt-2 sm:justify-end sm:gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-lg border border-zinc-700 px-5 py-2 text-white transition hover:bg-zinc-800"
+              className="
+                flex-1
+                rounded-lg
+                border
+                border-zinc-700
+                px-4
+                py-2.5
+                text-sm
+                text-white
+                transition
+                hover:bg-zinc-800
+                sm:flex-none
+              "
             >
               Cancel
             </button>
@@ -156,17 +222,26 @@ function EditListModal({
             <button
               type="submit"
               disabled={loading}
-              className="rounded-lg bg-red-600 px-5 py-2 font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
+              className="
+                flex-1
+                rounded-lg
+                bg-red-600
+                px-4
+                py-2.5
+                text-sm
+                font-semibold
+                text-white
+                transition
+                hover:bg-red-700
+                disabled:opacity-60
+                sm:flex-none
+              "
             >
               {loading ? "Saving..." : "Save Changes"}
             </button>
-
           </div>
-
         </form>
-
       </div>
-
     </div>
   );
 }

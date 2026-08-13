@@ -6,39 +6,56 @@ import RemoveItemModal from "./RemoveItemModal";
 
 const IMAGE = "https://image.tmdb.org/t/p/w500";
 
-function ListMediaCard({
-  item,
-  onRemove,
-}) {
+function ListMediaCard({ item, onRemove }) {
   const media = item.media;
 
   const [open, setOpen] = useState(false);
+
+  const handleRemove = (e) => {
+    // Prevent the poster Link from being triggered
+    e.preventDefault();
+    e.stopPropagation();
+
+    setOpen(true);
+  };
 
   return (
     <>
       <div className="group relative">
 
         {/* Remove Button */}
-
         <button
-          onClick={() => setOpen(true)}
+          type="button"
+          onClick={handleRemove}
+          aria-label={`Remove ${media.title} from list`}
           className="
             absolute
-            right-3
-            top-3
+            right-2
+            top-2
             z-20
+            flex
+            h-8
+            w-8
+            items-center
+            justify-center
             rounded-full
             bg-red-600
-            p-2
             text-white
-            opacity-0
+            shadow-lg
             transition
-            duration-200
             hover:bg-red-700
-            group-hover:opacity-100
+            sm:right-3
+            sm:top-3
+            sm:h-9
+            sm:w-9
+            lg:opacity-0
+            lg:group-hover:opacity-100
           "
         >
-          <Trash2 size={16} />
+          <Trash2
+            size={15}
+            className="sm:h-4 sm:w-4"
+          />
         </button>
 
         <Link
@@ -48,39 +65,46 @@ function ListMediaCard({
               : `/movie/${media.tmdbId}`
           }
         >
-          <div className="overflow-hidden rounded-xl bg-zinc-900 transition hover:-translate-y-2 hover:shadow-xl hover:shadow-red-600/20">
+          <div className="overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/60 hover:shadow-lg hover:shadow-red-600/10 sm:rounded-xl lg:hover:-translate-y-2">
 
-            <img
-              src={`${IMAGE}${media.posterPath}`}
-              alt={media.title}
-              className="h-80 w-full object-cover transition duration-500 group-hover:scale-110"
-            />
+            {/* Poster */}
+            <div className="aspect-2/3 overflow-hidden bg-zinc-800">
+              <img
+                src={`${IMAGE}${media.posterPath}`}
+                alt={media.title}
+                loading="lazy"
+                className="h-full w-full object-cover transition duration-500 lg:group-hover:scale-105"
+              />
+            </div>
 
-            <div className="p-4">
+            {/* Content */}
+            <div className="p-2.5 sm:p-3 lg:p-4">
 
-              <h3 className="truncate text-lg font-semibold text-white">
+              <h3 className="truncate text-sm font-semibold text-white sm:text-base">
                 {media.title}
               </h3>
 
-              <div className="mt-3 flex items-center justify-between">
+              <div className="mt-2 flex items-center justify-between gap-2">
 
-                <span className="rounded-full bg-red-600/20 px-3 py-1 text-xs text-red-400">
+                <span className="rounded-full bg-red-600/15 px-2 py-1 text-[9px] font-medium text-red-400 sm:px-2.5 sm:text-[10px]">
                   {media.mediaType.toUpperCase()}
                 </span>
 
                 <div className="flex items-center gap-1 text-yellow-400">
                   <Star
-                    size={15}
+                    size={13}
                     fill="currentColor"
                   />
 
-                  {media.voteAverage.toFixed(1)}
+                  <span className="text-xs">
+                    {media.voteAverage?.toFixed(1) || "N/A"}
+                  </span>
                 </div>
 
               </div>
 
               {item.notes && (
-                <p className="mt-4 line-clamp-2 text-sm text-gray-400">
+                <p className="mt-2 line-clamp-2 text-xs leading-5 text-zinc-400">
                   {item.notes}
                 </p>
               )}
@@ -88,7 +112,6 @@ function ListMediaCard({
             </div>
           </div>
         </Link>
-
       </div>
 
       <RemoveItemModal

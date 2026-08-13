@@ -1,4 +1,4 @@
-import { Trash2, X } from "lucide-react";
+import { X, Trash2 } from "lucide-react";
 
 function DeleteListModal({
   isOpen,
@@ -10,68 +10,137 @@ function DeleteListModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div
+      className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/70
+        px-4
+        backdrop-blur-sm
+      "
+    >
+      <div
+        className="
+          w-full
+          max-w-md
+          rounded-2xl
+          border
+          border-zinc-800
+          bg-zinc-900
+          p-5
+          shadow-2xl
+          sm:p-6
+        "
+      >
+        {/* Header */}
 
-      <div className="w-full max-w-md rounded-2xl bg-zinc-900 p-6">
-
-        <div className="flex items-center justify-between">
-
-          <h2 className="text-2xl font-bold text-white">
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-lg font-bold text-white sm:text-xl">
             Delete List
           </h2>
 
           <button
+            type="button"
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            disabled={loading}
+            className="
+              rounded-full
+              p-1.5
+              text-zinc-400
+              transition
+              hover:bg-zinc-800
+              hover:text-white
+              disabled:opacity-50
+            "
+            aria-label="Close"
           >
-            <X />
+            <X size={20} />
           </button>
-
         </div>
 
-        <div className="mt-6 flex justify-center">
-          <div className="rounded-full bg-red-600/20 p-5">
-            <Trash2
-              size={42}
-              className="text-red-500"
-            />
+        {/* Warning */}
+
+        <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4">
+          <div className="flex gap-3">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-500/10">
+              <Trash2
+                size={18}
+                className="text-red-500"
+              />
+            </div>
+
+            <div>
+              <p className="text-sm font-medium text-white">
+                Delete "{listName}"?
+              </p>
+
+              <p className="mt-1 text-xs leading-5 text-zinc-400 sm:text-sm">
+                This action cannot be undone. The list and
+                its organization will be permanently removed.
+              </p>
+            </div>
           </div>
         </div>
 
-        <p className="mt-6 text-center text-gray-300">
-          Are you sure you want to delete
-        </p>
+        {/* Actions */}
 
-        <p className="mt-2 text-center text-xl font-semibold text-white">
-          {listName}
-        </p>
-
-        <p className="mt-4 text-center text-sm text-gray-500">
-          This action cannot be undone.
-        </p>
-
-        <div className="mt-8 flex justify-end gap-3">
-
+        <div className="mt-6 flex gap-2 sm:justify-end sm:gap-3">
           <button
+            type="button"
             onClick={onClose}
             disabled={loading}
-            className="rounded-lg border border-zinc-700 px-5 py-2 text-white"
+            className="
+              flex-1
+              rounded-lg
+              border
+              border-zinc-700
+              px-4
+              py-2.5
+              text-sm
+              text-white
+              transition
+              hover:bg-zinc-800
+              disabled:opacity-50
+              sm:flex-none
+            "
           >
             Cancel
           </button>
 
           <button
+            type="button"
             onClick={onConfirm}
             disabled={loading}
-            className="rounded-lg bg-red-600 px-5 py-2 font-semibold text-white hover:bg-red-700"
+            className="
+              flex
+              flex-1
+              items-center
+              justify-center
+              gap-2
+              rounded-lg
+              bg-red-600
+              px-4
+              py-2.5
+              text-sm
+              font-medium
+              text-white
+              transition
+              hover:bg-red-700
+              disabled:cursor-not-allowed
+              disabled:opacity-60
+              sm:flex-none
+            "
           >
+            <Trash2 size={16} />
+
             {loading ? "Deleting..." : "Delete List"}
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 }

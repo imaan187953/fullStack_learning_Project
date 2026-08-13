@@ -7,37 +7,37 @@ function ListStats({ items }) {
     (item) => item.media.mediaType === "tv"
   ).length;
 
+  const stats = [
+    {
+      value: movieCount,
+      label: "Movies",
+    },
+    {
+      value: tvCount,
+      label: "TV Shows",
+    },
+    {
+      value: items.length,
+      label: "Total",
+    },
+  ];
+
   return (
-    <div className="mt-6 flex flex-wrap gap-6">
-      <div>
-        <p className="text-2xl font-bold text-white">
-          {movieCount}
-        </p>
+    <div className="mt-5 flex flex-wrap gap-2 sm:gap-3">
+      {stats.map((stat) => (
+        <div
+          key={stat.label}
+          className="rounded-lg border border-zinc-800 bg-zinc-900/70 px-3 py-2 sm:px-4"
+        >
+          <p className="text-base font-bold text-white sm:text-lg">
+            {stat.value}
+          </p>
 
-        <p className="text-sm text-zinc-400">
-          Movies
-        </p>
-      </div>
-
-      <div>
-        <p className="text-2xl font-bold text-white">
-          {tvCount}
-        </p>
-
-        <p className="text-sm text-zinc-400">
-          TV Shows
-        </p>
-      </div>
-
-      <div>
-        <p className="text-2xl font-bold text-white">
-          {items.length}
-        </p>
-
-        <p className="text-sm text-zinc-400">
-          Total Items
-        </p>
-      </div>
+          <p className="text-[10px] text-zinc-500 sm:text-xs">
+            {stat.label}
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
