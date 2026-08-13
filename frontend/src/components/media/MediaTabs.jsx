@@ -19,10 +19,7 @@ function MediaTabs({
 
   const changeTab = (tab) => {
     setSelectedTab(tab);
-
-    if (onTabChange) {
-      onTabChange(tab);
-    }
+    onTabChange?.(tab);
   };
 
   const tabs = [
@@ -54,35 +51,50 @@ function MediaTabs({
   };
 
   return (
-    <section className="mx-auto max-w-7xl px-6 pb-16">
+    <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+      {/* Tabs */}
+      <div className="mb-8 overflow-x-auto border-b border-zinc-800">
+        <div className="flex min-w-max">
+          {tabs.map((tab) => {
+            const isActive =
+              selectedTab === tab.id;
 
-      <div className="mb-10 flex flex-wrap border-b border-zinc-800">
+            return (
+              <button
+                key={tab.id}
+                onClick={() => changeTab(tab.id)}
+                className={`
+                  relative
+                  px-5
+                  py-4
+                  text-sm
+                  font-medium
+                  transition
+                  sm:px-6
+                  sm:text-base
 
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => changeTab(tab.id)}
-            className={`relative px-6 py-4 text-lg font-medium transition-all duration-300
+                  ${
+                    isActive
+                      ? "text-white"
+                      : "text-zinc-500 hover:text-zinc-200"
+                  }
+                `}
+              >
+                {tab.label}
 
-            ${
-              selectedTab === tab.id
-                ? "text-red-500"
-                : "text-gray-400 hover:text-white"
-            }`}
-          >
-            {tab.label}
-
-            {selectedTab === tab.id && (
-              <span className="absolute bottom-0 left-0 h-[3px] w-full rounded-full bg-red-600" />
-            )}
-
-          </button>
-        ))}
-
+                {isActive && (
+                  <span className="absolute bottom-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-red-500 sm:w-12" />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {renderContent()}
-
+      {/* Content */}
+      <div className="min-h-[250px]">
+        {renderContent()}
+      </div>
     </section>
   );
 }

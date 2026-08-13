@@ -11,75 +11,134 @@ function StarRating({
 
   const displayValue = hoverValue || value;
 
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-1">
+  const handleMouseEnter = (rating) => {
+    if (editable && !loading) {
+      setHoverValue(rating);
+    }
+  };
 
+  const handleMouseLeave = () => {
+    if (editable) {
+      setHoverValue(0);
+    }
+  };
+
+  const handleClick = (rating) => {
+    if (editable && !loading && onChange) {
+      onChange(rating);
+    }
+  };
+
+  return (
+    <div className="space-y-3">
+
+      {/* Stars */}
+
+      <div
+        className="
+          flex
+          items-center
+          gap-0.5
+          sm:gap-1
+        "
+        onMouseLeave={handleMouseLeave}
+      >
         {[...Array(10)].map((_, index) => {
           const rating = index + 1;
+
+          const isActive =
+            rating <= displayValue;
 
           return (
             <button
               key={rating}
               type="button"
               disabled={!editable || loading}
+              aria-label={`Rate ${rating} out of 10`}
               onMouseEnter={() =>
-                editable && setHoverValue(rating)
+                handleMouseEnter(rating)
               }
-              onMouseLeave={() =>
-                editable && setHoverValue(0)
+              onFocus={() =>
+                handleMouseEnter(rating)
               }
+              onBlur={handleMouseLeave}
               onClick={() =>
-                editable &&
-                !loading &&
-                onChange(rating)
+                handleClick(rating)
               }
-              className={`transition-all duration-200
+              className={`
+                rounded-md
+                p-0.5
+                transition-all
+                duration-150
 
                 ${
-                  editable
-                    ? "hover:scale-125 cursor-pointer"
+                  editable && !loading
+                    ? "cursor-pointer hover:scale-110 focus:outline-none focus:ring-2 focus:ring-yellow-400/40"
                     : "cursor-default"
                 }
 
                 ${
                   loading
-                    ? "opacity-50 cursor-not-allowed"
+                    ? "cursor-not-allowed opacity-50"
                     : ""
-                }`}
+                }
+              `}
             >
               <Star
-                size={30}
-                stroke="#facc15"
+                size={20}
+                className={`
+                  transition-colors
+                  duration-150
+                  sm:h-[24px]
+                  sm:w-[24px]
+
+                  ${
+                    isActive
+                      ? "text-yellow-400"
+                      : "text-zinc-700"
+                  }
+                `}
                 fill={
-                  rating <= displayValue
-                    ? "#facc15"
+                  isActive
+                    ? "currentColor"
                     : "transparent"
                 }
+                strokeWidth={1.8}
               />
             </button>
           );
         })}
       </div>
 
-      <div className="flex items-center justify-between">
+      {/* Value */}
 
-        <p className="text-lg font-semibold text-white">
+      <div className="flex items-center justify-between gap-4">
 
-          {displayValue > 0
-            ? `${displayValue}/10`
-            : "No Rating"}
-
+        <p className="text-sm font-semibold text-white sm:text-base">
+          {displayValue > 0 ? (
+            <>
+              <span className="text-yellow-400">
+                {displayValue}
+              </span>
+              <span className="text-zinc-500">
+                /10
+              </span>
+            </>
+          ) : (
+            <span className="text-zinc-500">
+              No rating
+            </span>
+          )}
         </p>
 
         {loading && (
-          <p className="text-sm text-red-500">
+          <div className="flex items-center gap-2 text-xs text-zinc-500">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
             Saving...
-          </p>
+          </div>
         )}
 
       </div>
-
     </div>
   );
 }
