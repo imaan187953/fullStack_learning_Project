@@ -13,20 +13,20 @@ function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-gray-800 bg-black/80 backdrop-blur-md">
-      <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:h-16 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-13 max-w-7xl items-center justify-between px-3 sm:h-14 sm:px-5 lg:h-16 lg:px-8">
 
         {/* Logo */}
         <Link
           to="/"
           onClick={closeMenu}
-          className="flex items-center gap-2 text-xl font-bold text-white sm:text-2xl"
+          className="flex items-center gap-1.5 text-lg font-bold text-white sm:gap-2 sm:text-xl lg:text-2xl"
         >
-          <Film className="h-6 w-6 text-red-500 sm:h-7 sm:w-7" />
+          <Film className="h-5 w-5 text-red-500 sm:h-6 sm:w-6 lg:h-7 lg:w-7" />
           <span>CineTrack</span>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-5 md:flex lg:gap-6">
           {isAuthenticated ? (
             <>
               <Link
@@ -52,7 +52,7 @@ function Navbar() {
 
               <Link
                 to="/profile"
-                className="rounded-full bg-red-500 px-4 py-2 text-sm text-white transition hover:bg-red-600 lg:text-base"
+                className="rounded-full bg-red-500 px-3 py-1.5 text-sm text-white transition hover:bg-red-600 lg:px-4 lg:py-2 lg:text-base"
               >
                 Profile
               </Link>
@@ -68,7 +68,7 @@ function Navbar() {
 
               <Link
                 to="/register"
-                className="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600 lg:text-base"
+                className="rounded-lg bg-red-500 px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-red-600 lg:px-4 lg:py-2"
               >
                 Register
               </Link>
@@ -79,27 +79,27 @@ function Navbar() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="rounded-lg p-2 text-gray-300 transition hover:bg-gray-800 hover:text-white md:hidden"
+          className="rounded-md p-1.5 text-gray-300 transition hover:bg-gray-800 hover:text-white md:hidden"
           aria-label="Toggle menu"
         >
           {isMenuOpen ? (
-            <X className="h-6 w-6" />
+            <X className="h-5 w-5" />
           ) : (
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           )}
         </button>
       </div>
 
       {/* Mobile Navigation */}
       {isMenuOpen && (
-        <div className="border-t border-gray-800 bg-black/95 px-4 py-4 md:hidden">
-          <div className="flex flex-col gap-2">
+        <div className="border-t border-gray-800 bg-black/95 px-3 py-3 md:hidden">
+          <div className="flex flex-col gap-1">
             {isAuthenticated ? (
               <>
                 <Link
                   to="/home"
                   onClick={closeMenu}
-                  className="rounded-lg px-4 py-3 text-gray-300 transition hover:bg-gray-800 hover:text-white"
+                  className="rounded-md px-3 py-2.5 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
                 >
                   Home
                 </Link>
@@ -107,7 +107,7 @@ function Navbar() {
                 <Link
                   to="/lists"
                   onClick={closeMenu}
-                  className="rounded-lg px-4 py-3 text-gray-300 transition hover:bg-gray-800 hover:text-white"
+                  className="rounded-md px-3 py-2.5 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
                 >
                   Lists
                 </Link>
@@ -115,7 +115,7 @@ function Navbar() {
                 <Link
                   to="/ai"
                   onClick={closeMenu}
-                  className="rounded-lg px-4 py-3 text-gray-300 transition hover:bg-gray-800 hover:text-white"
+                  className="rounded-md px-3 py-2.5 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
                 >
                   AI Recommendations
                 </Link>
@@ -123,7 +123,7 @@ function Navbar() {
                 <Link
                   to="/profile"
                   onClick={closeMenu}
-                  className="mt-2 rounded-lg bg-red-500 px-4 py-3 text-center font-medium text-white transition hover:bg-red-600"
+                  className="mt-1 rounded-md bg-red-500 px-3 py-2.5 text-center text-sm font-medium text-white transition hover:bg-red-600"
                 >
                   Profile
                 </Link>
@@ -133,7 +133,7 @@ function Navbar() {
                 <Link
                   to="/login"
                   onClick={closeMenu}
-                  className="rounded-lg px-4 py-3 text-gray-300 transition hover:bg-gray-800 hover:text-white"
+                  className="rounded-md px-3 py-2.5 text-sm text-gray-300 transition hover:bg-gray-800 hover:text-white"
                 >
                   Login
                 </Link>
@@ -141,7 +141,7 @@ function Navbar() {
                 <Link
                   to="/register"
                   onClick={closeMenu}
-                  className="rounded-lg bg-red-500 px-4 py-3 text-center font-semibold text-white transition hover:bg-red-600"
+                  className="rounded-md bg-red-500 px-3 py-2.5 text-center text-sm font-semibold text-white transition hover:bg-red-600"
                 >
                   Register
                 </Link>

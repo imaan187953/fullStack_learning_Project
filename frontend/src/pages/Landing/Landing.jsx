@@ -8,67 +8,67 @@ import CTASection from "./CTASection";
 import FeaturesSection from "./FeaturesSection";
 
 import {
-    getTrendingMovies,
-    getTrendingTV,
+  getTrendingMovies,
+  getTrendingTV,
 } from "../../services/media.service";
 
 function Landing() {
-    const [movies, setMovies] = useState([]);
-    const [tvShows, setTvShows] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [tvShows, setTvShows] = useState([]);
 
-    const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchLandingData = async () => {
-            try {
-                const [movieResponse, tvResponse] = await Promise.all([
-                    getTrendingMovies(),
-                    getTrendingTV(),
-                ]);
+  useEffect(() => {
+    const fetchLandingData = async () => {
+      try {
+        const [movieResponse, tvResponse] = await Promise.all([
+          getTrendingMovies(),
+          getTrendingTV(),
+        ]);
 
-                setMovies(movieResponse.results);
-                setTvShows(tvResponse.results);
-            } catch (error) {
-                console.error("Failed to load landing page:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        setMovies(movieResponse.results);
+        setTvShows(tvResponse.results);
+      } catch (error) {
+        console.error("Failed to load landing page:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-        fetchLandingData();
-    }, []);
+    fetchLandingData();
+  }, []);
 
-    if (loading) {
-        return (
-            <div className="flex min-h-screen items-center justify-center bg-black text-white">
-                Loading...
-            </div>
-        );
-    }
-
+  if (loading) {
     return (
-        <div className="min-h-screen bg-black">
-            <Navbar />
-
-            <HeroSection movie={movies[0]} />
-
-            <TrendingSection
-                title=" Trending Movies"
-                movies={movies}
-            />
-
-            <TrendingSection
-                title=" Trending TV Shows"
-                movies={tvShows}
-            />
-
-            <FeaturesSection />
-
-            <CTASection />
-
-            <Footer />
-        </div>
+      <div className="flex min-h-screen items-center justify-center bg-black px-4 text-sm text-white">
+        Loading...
+      </div>
     );
+  }
+
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-black">
+      <Navbar />
+
+      <HeroSection movie={movies[0]} />
+
+      <TrendingSection
+        title="Trending Movies"
+        movies={movies}
+      />
+
+      <TrendingSection
+        title="Trending TV Shows"
+        movies={tvShows}
+      />
+
+      <FeaturesSection />
+
+      <CTASection />
+
+      <Footer />
+    </div>
+  );
 }
 
 export default Landing;
