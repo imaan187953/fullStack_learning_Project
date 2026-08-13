@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import HeroSection from "../../components/home/HeroSection";
 import MyListsSection from "../../components/home/MyListsSection";
-import AIRecommendationSection from "../../components/home/AIRecommendationSection";
 import Footer from "../../components/layout/Footer";
 import TrendingSection from "../Landing/TrendingSection";
 import Navbar from "../../components/layout/Navbar";
@@ -65,9 +64,6 @@ function Home() {
 
         <MyListsSection />
 
-        {/* AI Recommendations */}
-
-        <AIRecommendationSection />
 
         <TrendingSection
           title=" Trending Movies"
