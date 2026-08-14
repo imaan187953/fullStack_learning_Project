@@ -14,9 +14,7 @@ import {
 } from "../../services/review.service";
 
 function MyReviewsPage() {
-
   const [reviews, setReviews] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
   const [selectedReview, setSelectedReview] =
@@ -26,119 +24,89 @@ function MyReviewsPage() {
     useState(false);
 
   const loadReviews = async () => {
-
     try {
+      setLoading(true);
 
-      const response =
-        await getMyReviews();
+      const response = await getMyReviews();
 
       setReviews(response.reviews || []);
-
     } catch (error) {
-
       console.error(error);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   useEffect(() => {
-
     loadReviews();
-
   }, []);
 
   const handleDelete = async (id) => {
-
-    if (
-      !window.confirm(
-        "Delete this review?"
-      )
-    )
+    if (!window.confirm("Delete this review?")) {
       return;
-
-    try {
-
-      await deleteReview(id);
-
-      loadReviews();
-
-    } catch (error) {
-
-      alert(
-        error.response?.data?.message
-      );
-
     }
 
+    try {
+      await deleteReview(id);
+
+      await loadReviews();
+    } catch (error) {
+      alert(
+        error.response?.data?.message ||
+          "Unable to delete review."
+      );
+    }
   };
 
   const handleEdit = (review) => {
-
     setSelectedReview(review);
-
     setShowEditModal(true);
-
   };
 
   return (
-    <main className="min-h-screen bg-black">
+    <main className="min-h-screen overflow-x-hidden bg-black">
 
       <Navbar />
 
-      <div className="mx-auto max-w-6xl px-6 py-10">
+      <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
 
         <Link
           to="/profile"
-          className="mb-10 inline-flex items-center gap-2 text-zinc-400 hover:text-white"
+          className="mb-6 inline-flex items-center gap-2 text-sm text-zinc-500 transition hover:text-white sm:mb-8"
         >
-          <ArrowLeft size={18} />
-
+          <ArrowLeft size={17} />
           Back to Profile
-
         </Link>
 
-        <h1 className="mb-10 text-4xl font-bold text-white">
-          My Reviews
-        </h1>
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
+            My Reviews
+          </h1>
+
+          <p className="mt-1 text-sm text-zinc-500">
+            Reviews you've shared with the CineTrack community.
+          </p>
+        </div>
 
         {loading ? (
-
-          <p className="text-zinc-400">
-            Loading...
-          </p>
-
+          <div className="h-32 animate-pulse rounded-2xl bg-zinc-900" />
         ) : reviews.length === 0 ? (
-
-          <div className="rounded-xl border border-dashed border-zinc-700 py-14 text-center">
-
-            <p className="text-lg text-zinc-400">
+          <div className="rounded-2xl border border-dashed border-zinc-700 px-4 py-12 text-center sm:py-14">
+            <p className="text-sm text-zinc-500 sm:text-base">
               You haven't written any reviews yet.
             </p>
-
           </div>
-
         ) : (
-
-          <div className="space-y-6">
-
+          <div className="space-y-4 sm:space-y-5">
             {reviews.map((review) => (
-
               <ReviewHistoryCard
                 key={review._id}
                 review={review}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
               />
-
             ))}
-
           </div>
-
         )}
 
       </div>
@@ -148,7 +116,6 @@ function MyReviewsPage() {
         onClose={() => {
           setShowEditModal(false);
           setSelectedReview(null);
-          loadReviews();
         }}
         reviewData={selectedReview}
         onSuccess={loadReviews}

@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, List } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ function ProfileListsSection() {
       try {
         const response = await getMyLists();
 
-        const recentLists = response.lists.slice(0, 2);
+        const recentLists = (response.lists || []).slice(0, 2);
 
         const data = await Promise.all(
           recentLists.map(async (list) => {
@@ -27,7 +27,7 @@ function ProfileListsSection() {
 
               return {
                 ...list,
-                itemCount: items.items.length,
+                itemCount: items.items?.length || 0,
               };
             } catch {
               return {
@@ -50,73 +50,71 @@ function ProfileListsSection() {
   }, []);
 
   return (
-    <section className="rounded-2xl border border-zinc-800 bg-zinc-900 p-8">
+    <section className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 sm:p-6 lg:p-8">
 
-      <div className="mb-6 flex items-center justify-between">
+      {/* Header */}
+      <div className="mb-5 flex items-center justify-between gap-4 sm:mb-6">
 
-        <div>
-
-          <h2 className="text-2xl font-bold text-white">
+        <div className="min-w-0">
+          <h2 className="text-xl font-bold text-white sm:text-2xl">
             Your Library
           </h2>
 
-          <p className="mt-1 text-sm text-zinc-400">
+          <p className="mt-1 text-xs text-zinc-500 sm:text-sm">
             Your recently updated lists
           </p>
-
         </div>
 
         <button
+          type="button"
           onClick={() => navigate("/lists")}
-          className="flex items-center gap-1 text-red-500 transition hover:text-red-400"
+          className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-red-500 transition hover:text-red-400 sm:text-sm"
         >
           View All
-
-          <ChevronRight size={18} />
+          <ChevronRight size={16} />
         </button>
 
       </div>
 
+      {/* Content */}
       {loading ? (
-        <p className="text-zinc-500">
-          Loading...
-        </p>
+        <div className="h-20 animate-pulse rounded-xl bg-zinc-950/70" />
       ) : lists.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-700 p-6 text-center text-zinc-500">
-          No lists created yet.
+        <div className="rounded-xl border border-dashed border-zinc-700 px-4 py-8 text-center">
+          <List className="mx-auto text-zinc-600" size={24} />
+
+          <p className="mt-3 text-sm text-zinc-500">
+            No lists created yet.
+          </p>
         </div>
       ) : (
         <div className="space-y-3">
-
           {lists.map((list) => (
-
             <button
               key={list._id}
-              onClick={() => navigate(`/lists/${list._id}`)}
-              className="flex w-full items-center justify-between rounded-xl bg-zinc-800 p-4 transition hover:bg-zinc-700"
+              type="button"
+              onClick={() =>
+                navigate(`/lists/${list._id}`)
+              }
+              className="flex w-full min-w-0 items-center justify-between gap-4 rounded-xl bg-zinc-950/70 p-4 text-left transition hover:bg-zinc-800"
             >
-
-              <div className="text-left">
-
-                <h3 className="font-semibold text-white">
+              <div className="min-w-0">
+                <h3 className="truncate text-sm font-semibold text-white sm:text-base">
                   {list.name}
                 </h3>
 
-                <p className="text-sm text-zinc-400">
-                  {list.itemCount} items
+                <p className="mt-1 text-xs text-zinc-500 sm:text-sm">
+                  {list.itemCount}{" "}
+                  {list.itemCount === 1 ? "item" : "items"}
                 </p>
-
               </div>
 
               <ChevronRight
-                size={18}
-                className="text-zinc-500"
+                size={17}
+                className="shrink-0 text-zinc-600"
               />
-
             </button>
-
           ))}
-
         </div>
       )}
 

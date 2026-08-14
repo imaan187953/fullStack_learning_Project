@@ -7,12 +7,17 @@ function RatingHistoryCard({
 }) {
   const media = rating.media;
 
-  return (
-    <div className="flex items-center gap-5 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 transition hover:border-red-500">
+  if (!media) return null;
 
+  const mediaType = media.mediaType || "movie";
+
+  return (
+    <article className="flex min-w-0 flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 transition hover:border-zinc-700 sm:flex-row sm:gap-5 sm:p-5">
+
+      {/* Poster */}
       <Link
-        to={`/${media.mediaType}/${media.tmdbId}`}
-        className="shrink-0"
+        to={`/${mediaType}/${media.tmdbId}`}
+        className="mx-auto shrink-0 sm:mx-0"
       >
         <img
           src={
@@ -21,46 +26,54 @@ function RatingHistoryCard({
               : "https://placehold.co/200x300?text=No+Poster"
           }
           alt={media.title}
-          className="h-40 w-28 rounded-xl object-cover"
+          className="h-44 w-28 rounded-xl object-cover sm:h-40 sm:w-28"
         />
       </Link>
 
-      <div className="flex flex-1 items-center justify-between">
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-col">
 
-        <div>
+        <div className="flex min-w-0 items-start justify-between gap-3">
 
-          <Link
-            to={`/${media.mediaType}/${media.tmdbId}`}
-          >
-            <h2 className="text-xl font-bold text-white hover:text-red-500">
-              {media.title}
-            </h2>
-          </Link>
+          <div className="min-w-0">
+            <Link
+              to={`/${mediaType}/${media.tmdbId}`}
+            >
+              <h2 className="break-words text-lg font-bold leading-tight text-white transition hover:text-red-500 sm:text-xl">
+                {media.title}
+              </h2>
+            </Link>
 
-          <p className="mt-2 text-sm uppercase tracking-wide text-zinc-500">
-            {media.mediaType}
-          </p>
-
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2 text-white">
-            <Star
-              size={16}
-              fill="white"
-            />
-            {rating.rating}/10
+            <p className="mt-1 text-xs uppercase tracking-wide text-zinc-600">
+              {mediaType}
+            </p>
           </div>
+
+          <button
+            type="button"
+            onClick={() => onDelete(media._id)}
+            className="shrink-0 rounded-lg bg-zinc-800 p-2.5 text-zinc-400 transition hover:bg-red-600 hover:text-white"
+            aria-label="Delete rating"
+          >
+            <Trash2 size={17} />
+          </button>
 
         </div>
 
-        <button
-          onClick={() => onDelete(rating.media._id)}
-          className="rounded-lg bg-zinc-800 p-3 text-white transition hover:bg-red-600"
-        >
-          <Trash2 size={20} />
-        </button>
+        <div className="mt-4">
+          <div className="inline-flex items-center gap-2 rounded-full bg-red-600 px-3 py-1.5 text-sm font-semibold text-white">
+            <Star
+              size={15}
+              fill="white"
+            />
+
+            {rating.rating}/10
+          </div>
+        </div>
 
       </div>
 
-    </div>
+    </article>
   );
 }
 

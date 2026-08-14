@@ -8,12 +8,17 @@ function ReviewHistoryCard({
 }) {
   const media = review.media;
 
-  return (
-    <div className="flex gap-5 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 transition hover:border-red-500">
+  if (!media) return null;
 
+  const mediaType = media.mediaType || "movie";
+
+  return (
+    <article className="flex min-w-0 flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 transition hover:border-zinc-700 sm:flex-row sm:gap-5 sm:p-5">
+
+      {/* Poster */}
       <Link
-        to={`/${media.mediaType}/${media.tmdbId}`}
-        className="shrink-0"
+        to={`/${mediaType}/${media.tmdbId}`}
+        className="mx-auto shrink-0 sm:mx-0"
       >
         <img
           src={
@@ -22,61 +27,68 @@ function ReviewHistoryCard({
               : "https://placehold.co/200x300?text=No+Poster"
           }
           alt={media.title}
-          className="h-40 w-28 rounded-xl object-cover"
+          className="h-44 w-28 rounded-xl object-cover sm:h-40 sm:w-28"
         />
       </Link>
 
-      <div className="flex flex-1 flex-col">
+      {/* Content */}
+      <div className="flex min-w-0 flex-1 flex-col">
 
-        <div className="flex items-start justify-between">
+        {/* Top */}
+        <div className="flex min-w-0 items-start justify-between gap-3">
 
-          <div>
-
+          <div className="min-w-0">
             <Link
-              to={`/${media.mediaType}/${media.tmdbId}`}
+              to={`/${mediaType}/${media.tmdbId}`}
             >
-              <h2 className="text-xl font-bold text-white hover:text-red-500">
+              <h2 className="break-words text-lg font-bold leading-tight text-white transition hover:text-red-500 sm:text-xl">
                 {media.title}
               </h2>
             </Link>
 
-            <p className="mt-1 text-sm uppercase tracking-wide text-zinc-500">
-              {media.mediaType}
+            <p className="mt-1 text-xs uppercase tracking-wide text-zinc-600">
+              {mediaType}
             </p>
-
           </div>
 
-          <div className="flex gap-2">
+          {/* Actions */}
+          <div className="flex shrink-0 gap-2">
 
             <button
+              type="button"
               onClick={() => onEdit(review)}
-              className="rounded-lg bg-zinc-800 p-2 text-white transition hover:bg-red-600"
+              className="rounded-lg bg-zinc-800 p-2.5 text-zinc-400 transition hover:bg-red-600 hover:text-white"
+              aria-label="Edit review"
             >
-              <Pencil size={18} />
+              <Pencil size={16} />
             </button>
 
             <button
+              type="button"
               onClick={() => onDelete(review._id)}
-              className="rounded-lg bg-zinc-800 p-2 text-white transition hover:bg-red-600"
+              className="rounded-lg bg-zinc-800 p-2.5 text-zinc-400 transition hover:bg-red-600 hover:text-white"
+              aria-label="Delete review"
             >
-              <Trash2 size={18} />
+              <Trash2 size={16} />
             </button>
 
           </div>
 
         </div>
 
-        <p className="mt-5 leading-7 text-zinc-300">
+        {/* Review */}
+        <p className="mt-4 break-words text-sm leading-6 text-zinc-300 sm:text-base sm:leading-7">
           {review.review}
         </p>
 
-        <span className="mt-auto pt-5 text-sm text-zinc-500">
+        {/* Date */}
+        <span className="mt-4 text-xs text-zinc-600 sm:mt-auto sm:pt-5">
           {new Date(review.createdAt).toLocaleDateString()}
         </span>
 
       </div>
 
-    </div>
+    </article>
   );
 }
 
