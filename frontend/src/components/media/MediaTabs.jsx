@@ -51,50 +51,63 @@ function MediaTabs({
   };
 
   return (
-    <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8">
+    <section className="mx-auto w-full max-w-7xl px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
+
       {/* Tabs */}
-      <div className="mb-8 overflow-x-auto border-b border-zinc-800">
-        <div className="flex min-w-max">
-          {tabs.map((tab) => {
-            const isActive =
-              selectedTab === tab.id;
+      <div className="mb-7 flex w-full border-b border-zinc-800 sm:mb-10">
 
-            return (
-              <button
-                key={tab.id}
-                onClick={() => changeTab(tab.id)}
-                className={`
-                  relative
-                  px-5
-                  py-4
-                  text-sm
-                  font-medium
-                  transition
-                  sm:px-6
-                  sm:text-base
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => changeTab(tab.id)}
+            className={`
+              relative
+              flex-1
+              px-2
+              py-3
+              text-sm
+              font-medium
+              transition-all
+              duration-200
+              sm:flex-none
+              sm:px-6
+              sm:py-4
+              sm:text-base
+              lg:text-lg
 
-                  ${
-                    isActive
-                      ? "text-white"
-                      : "text-zinc-500 hover:text-zinc-200"
-                  }
-                `}
-              >
-                {tab.label}
+              ${
+                selectedTab === tab.id
+                  ? "text-red-500"
+                  : "text-gray-400 hover:text-white"
+              }
+            `}
+          >
+            {tab.label}
 
-                {isActive && (
-                  <span className="absolute bottom-0 left-1/2 h-0.5 w-10 -translate-x-1/2 rounded-full bg-red-500 sm:w-12" />
-                )}
-              </button>
-            );
-          })}
-        </div>
+            {selectedTab === tab.id && (
+              <span
+                className="
+                  absolute
+                  bottom-0
+                  left-0
+                  h-[2px]
+                  w-full
+                  rounded-full
+                  bg-red-600
+                  sm:h-[3px]
+                "
+              />
+            )}
+          </button>
+        ))}
+
       </div>
 
       {/* Content */}
-      <div className="min-h-[250px]">
+      <div className="min-w-0">
         {renderContent()}
       </div>
+
     </section>
   );
 }

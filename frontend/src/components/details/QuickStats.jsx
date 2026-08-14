@@ -8,128 +8,132 @@ import {
 
 function QuickStats({
   media,
-  mediaType = "movie",
+  mediaType,
 }) {
   if (!media) return null;
 
-  const stats = [
-    {
-      label: "TMDB Rating",
-      value:
-        media.voteAverage !== undefined
-          ? `${media.voteAverage.toFixed(1)}/10`
-          : "N/A",
-      icon: Star,
-      iconClass: "text-yellow-400",
-    },
-    {
-      label: "Release Date",
-      value: media.releaseDate
-        ? media.releaseDate.slice(0, 10)
-        : "N/A",
-      icon: Calendar,
-      iconClass: "text-zinc-400",
-    },
-    {
-      label:
-        mediaType === "movie"
-          ? "Runtime"
-          : "Seasons",
-      value:
-        mediaType === "movie"
-          ? media.runtime
-            ? `${media.runtime} min`
-            : "N/A"
-          : media.numberOfSeasons ?? "N/A",
-      icon:
-        mediaType === "movie"
-          ? Clock3
-          : Layers,
-      iconClass: "text-zinc-400",
-    },
-    {
-      label: "Status",
-      value: media.status || "N/A",
-      icon: Film,
-      iconClass: "text-zinc-400",
-    },
-  ];
-
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/70 p-5 sm:p-6">
-      {/* Header */}
-      <div className="mb-6">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
-          Details
-        </p>
+    <div className="w-full rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:p-6">
 
-        <h2 className="mt-1 text-xl font-semibold text-white">
-          Quick Statistics
-        </h2>
-      </div>
+      <h2 className="mb-5 text-xl font-bold text-white sm:mb-6 sm:text-2xl">
+        Quick Statistics
+      </h2>
 
-      {/* Stats */}
-      <div className="divide-y divide-zinc-800">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
+      <div className="space-y-4 sm:space-y-5">
 
-          return (
-            <div
-              key={stat.label}
-              className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0"
-            >
-              <div className="flex min-w-0 items-center gap-3">
-                <Icon
-                  size={17}
-                  className={`shrink-0 ${stat.iconClass}`}
-                  fill={
-                    stat.label === "TMDB Rating"
-                      ? "currentColor"
-                      : "none"
-                  }
-                />
+        {/* TMDB Rating */}
+        <div className="flex items-center justify-between gap-4">
 
-                <span className="truncate text-sm text-zinc-500">
-                  {stat.label}
-                </span>
-              </div>
+          <div className="flex min-w-0 items-center gap-3 text-sm text-gray-400 sm:text-base">
+            <Star
+              size={18}
+              className="shrink-0 text-yellow-400"
+              fill="currentColor"
+            />
 
-              <span className="shrink-0 text-right text-sm font-semibold text-white">
-                {stat.value}
-              </span>
+            <span>TMDB Rating</span>
+          </div>
+
+          <span className="shrink-0 text-sm font-semibold text-white sm:text-base">
+            {media.voteAverage?.toFixed(1) || "0.0"}/10
+          </span>
+
+        </div>
+
+        {/* Release Date */}
+        <div className="flex items-center justify-between gap-4">
+
+          <div className="flex min-w-0 items-center gap-3 text-sm text-gray-400 sm:text-base">
+            <Calendar size={18} className="shrink-0" />
+
+            <span>Release Date</span>
+          </div>
+
+          <span className="shrink-0 text-right text-sm font-semibold text-white sm:text-base">
+            {media.releaseDate?.slice(0, 10) || "N/A"}
+          </span>
+
+        </div>
+
+        {/* Runtime / Seasons */}
+        {mediaType === "movie" ? (
+          <div className="flex items-center justify-between gap-4">
+
+            <div className="flex items-center gap-3 text-sm text-gray-400 sm:text-base">
+              <Clock3 size={18} className="shrink-0" />
+
+              <span>Runtime</span>
             </div>
-          );
-        })}
-      </div>
 
-      {/* Genres */}
-      {media.genres?.length > 0 && (
-        <div className="mt-6 border-t border-zinc-800 pt-5">
-          <p className="mb-3 text-sm text-zinc-500">
+            <span className="shrink-0 text-sm font-semibold text-white sm:text-base">
+              {media.runtime ? `${media.runtime} min` : "N/A"}
+            </span>
+
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-4">
+
+            <div className="flex items-center gap-3 text-sm text-gray-400 sm:text-base">
+              <Layers size={18} className="shrink-0" />
+
+              <span>Seasons</span>
+            </div>
+
+            <span className="shrink-0 text-sm font-semibold text-white sm:text-base">
+              {media.numberOfSeasons || "N/A"}
+            </span>
+
+          </div>
+        )}
+
+        {/* Status */}
+        <div className="flex items-center justify-between gap-4">
+
+          <div className="flex items-center gap-3 text-sm text-gray-400 sm:text-base">
+            <Film size={18} className="shrink-0" />
+
+            <span>Status</span>
+          </div>
+
+          <span className="max-w-[55%] truncate text-right text-sm font-semibold text-white sm:text-base">
+            {media.status || "N/A"}
+          </span>
+
+        </div>
+
+        {/* Genres */}
+        <div className="pt-1">
+
+          <p className="mb-3 text-sm text-gray-400 sm:text-base">
             Genres
           </p>
 
           <div className="flex flex-wrap gap-2">
-            {media.genres.map((genre) => (
+
+            {media.genres?.map((genre) => (
               <span
                 key={genre.id}
                 className="
                   rounded-full
-                  border
-                  border-zinc-700
-                  bg-zinc-800/70
+                  bg-red-600/90
                   px-3
-                  py-1.5
+                  py-1
                   text-xs
-                  text-zinc-300
+                  font-medium
+                  text-white
+                  sm:text-sm
                 "
               >
                 {genre.name}
               </span>
             ))}
+
           </div>
+
         </div>
-      )}
+
+      </div>
+
     </div>
   );
 }

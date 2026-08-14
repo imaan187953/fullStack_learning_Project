@@ -33,7 +33,6 @@ function MoviePage() {
 
         setMovie(response.movie);
       } catch (err) {
-        console.error(err);
         setError("Unable to load movie.");
       } finally {
         setLoading(false);
@@ -45,46 +44,39 @@ function MoviePage() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-6">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-2 border-zinc-700 border-t-red-500" />
-
-          <p className="text-sm text-zinc-400">
-            Loading movie...
-          </p>
-        </div>
-      </main>
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-6 text-center text-white">
+        <p className="text-sm sm:text-base">
+          Loading movie...
+        </p>
+      </div>
     );
   }
 
   if (error || !movie) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-6">
-        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 px-8 py-10 text-center">
-          <p className="text-lg font-medium text-red-400">
-            {error || "Movie not found."}
-          </p>
-        </div>
-      </main>
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-6 text-center">
+        <p className="text-sm text-red-500 sm:text-base">
+          {error || "Movie not found."}
+        </p>
+      </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      {/* Hero */}
+    <main className="min-h-screen overflow-x-hidden bg-zinc-950">
+
       <MovieHero
         movie={movie}
         onAddToList={() => setShowAddModal(true)}
       />
 
-      {/* Tabs + Content */}
       <MediaTabs
         activeTab={activeTab}
         onTabChange={setActiveTab}
+
         overview={
           <InteractionSection
-            media={movie}
-            mediaType="movie"
+            movie={movie}
             onAddToList={() => setShowAddModal(true)}
             onRate={() => setActiveTab("ratings")}
             onReview={() => {
@@ -93,6 +85,7 @@ function MoviePage() {
             }}
           />
         }
+
         reviews={
           <ReviewsSection
             mediaId={movie._id}
@@ -100,18 +93,21 @@ function MoviePage() {
             onCloseModal={() => setShowReviewModal(false)}
           />
         }
+
         ratings={
-          <RatingSummary mediaId={movie._id} />
+          <RatingSummary
+            mediaId={movie._id}
+          />
         }
       />
 
-      {/* Add to List */}
       <AddToListModal
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
         tmdbId={movie.tmdbId}
         mediaType="movie"
       />
+
     </main>
   );
 }
