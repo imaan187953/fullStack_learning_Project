@@ -1,4 +1,4 @@
-import { ChevronRight, List } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ function ProfileListsSection() {
 
               return {
                 ...list,
-                itemCount: items.items?.length || 0,
+                itemCount: items.items.length,
               };
             } catch {
               return {
@@ -50,10 +50,10 @@ function ProfileListsSection() {
   }, []);
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 sm:p-6 lg:p-8">
+    <section className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 sm:p-6 lg:p-8">
 
       {/* Header */}
-      <div className="mb-5 flex items-center justify-between gap-4 sm:mb-6">
+      <div className="mb-5 flex min-w-0 items-center justify-between gap-4 sm:mb-6">
 
         <div className="min-w-0">
           <h2 className="text-xl font-bold text-white sm:text-2xl">
@@ -68,36 +68,38 @@ function ProfileListsSection() {
         <button
           type="button"
           onClick={() => navigate("/lists")}
-          className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-red-500 transition hover:text-red-400 sm:text-sm"
+          className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-red-500 transition hover:text-red-400"
         >
-          View All
-          <ChevronRight size={16} />
+          <span>View All</span>
+          <ChevronRight size={17} />
         </button>
 
       </div>
 
       {/* Content */}
       {loading ? (
-        <div className="h-20 animate-pulse rounded-xl bg-zinc-950/70" />
+        <div className="rounded-xl bg-zinc-950/50 p-5">
+          <p className="text-sm text-zinc-500">
+            Loading...
+          </p>
+        </div>
       ) : lists.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-700 px-4 py-8 text-center">
-          <List className="mx-auto text-zinc-600" size={24} />
-
-          <p className="mt-3 text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-zinc-700 p-6 text-center">
+          <p className="text-sm text-zinc-500">
             No lists created yet.
           </p>
         </div>
       ) : (
         <div className="space-y-3">
+
           {lists.map((list) => (
             <button
               key={list._id}
               type="button"
-              onClick={() =>
-                navigate(`/lists/${list._id}`)
-              }
-              className="flex w-full min-w-0 items-center justify-between gap-4 rounded-xl bg-zinc-950/70 p-4 text-left transition hover:bg-zinc-800"
+              onClick={() => navigate(`/lists/${list._id}`)}
+              className="flex w-full min-w-0 items-center justify-between gap-4 rounded-xl bg-zinc-800/80 p-4 text-left transition hover:bg-zinc-800"
             >
+
               <div className="min-w-0">
                 <h3 className="truncate text-sm font-semibold text-white sm:text-base">
                   {list.name}
@@ -110,11 +112,13 @@ function ProfileListsSection() {
               </div>
 
               <ChevronRight
-                size={17}
-                className="shrink-0 text-zinc-600"
+                size={18}
+                className="shrink-0 text-zinc-500"
               />
+
             </button>
           ))}
+
         </div>
       )}
 

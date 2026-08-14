@@ -1,5 +1,5 @@
+import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { ChevronRight, MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { getMyReviews } from "../../services/review.service";
@@ -29,10 +29,10 @@ function ProfileReviewsSection() {
   }, []);
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 sm:p-6 lg:p-8">
+    <section className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/80 p-5 sm:p-6 lg:p-8">
 
       {/* Header */}
-      <div className="mb-5 flex items-center justify-between gap-4 sm:mb-6">
+      <div className="mb-5 flex min-w-0 items-center justify-between gap-4 sm:mb-6">
 
         <div className="min-w-0">
           <h2 className="text-xl font-bold text-white sm:text-2xl">
@@ -47,24 +47,24 @@ function ProfileReviewsSection() {
         <button
           type="button"
           onClick={() => navigate("/profile/reviews")}
-          className="inline-flex shrink-0 items-center gap-0.5 text-xs font-medium text-red-500 transition hover:text-red-400 sm:text-sm"
+          className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-red-500 transition hover:text-red-400"
         >
-          View All
-          <ChevronRight size={16} />
+          <span>View All</span>
+          <ChevronRight size={17} />
         </button>
 
       </div>
 
+      {/* Content */}
       {loading ? (
-        <div className="h-20 animate-pulse rounded-xl bg-zinc-950/70" />
+        <div className="rounded-xl bg-zinc-950/50 p-5">
+          <p className="text-sm text-zinc-500">
+            Loading...
+          </p>
+        </div>
       ) : reviews.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-zinc-700 px-4 py-8 text-center">
-          <MessageSquare
-            className="mx-auto text-zinc-600"
-            size={24}
-          />
-
-          <p className="mt-3 text-sm text-zinc-500">
+        <div className="rounded-xl border border-dashed border-zinc-700 p-6 text-center">
+          <p className="text-sm text-zinc-500">
             No reviews yet.
           </p>
         </div>
@@ -77,18 +77,20 @@ function ProfileReviewsSection() {
               type="button"
               onClick={() =>
                 navigate(
-                  `/${review.media?.mediaType || "movie"}/${review.media?.tmdbId}`
+                  `/${review.media.mediaType}/${review.media.tmdbId}`
                 )
               }
-              className="w-full min-w-0 rounded-xl bg-zinc-950/70 p-4 text-left transition hover:bg-zinc-800"
+              className="w-full min-w-0 rounded-xl bg-zinc-800/80 p-4 text-left transition hover:bg-zinc-800"
             >
+
               <h3 className="truncate text-sm font-semibold text-white sm:text-base">
-                {review.media?.title || "Untitled"}
+                {review.media.title}
               </h3>
 
-              <p className="mt-1 line-clamp-2 break-words text-xs leading-5 text-zinc-500 sm:text-sm sm:leading-6">
+              <p className="mt-1 line-clamp-2 break-words text-xs leading-5 text-zinc-400 sm:text-sm">
                 {review.review}
               </p>
+
             </button>
           ))}
 

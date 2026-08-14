@@ -18,27 +18,35 @@ function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black px-4 text-white">
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-white">
         Loading...
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-black">
+    <main className="min-h-screen overflow-x-hidden bg-zinc-950">
+
       <Navbar />
 
-      <div className="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:space-y-8 sm:px-6 sm:py-8 lg:space-y-10 lg:px-8 lg:py-10">
-        <ProfileHeader
-          user={user}
-          onEdit={() => setShowEditModal(true)}
-        />
+      {/* Profile Content */}
+      <div className="mx-auto w-full max-w-7xl px-4 pt-6 pb-10 sm:px-6 sm:pt-8 lg:px-8 lg:pt-10">
 
-        <ProfileListsSection />
+        <div className="space-y-6 sm:space-y-8 lg:space-y-10">
 
-        <ProfileReviewsSection />
+          <ProfileHeader
+            user={user}
+            onEdit={() => setShowEditModal(true)}
+          />
 
-        <ProfileRatingsSection />
+          <ProfileListsSection />
+
+          <ProfileReviewsSection />
+
+          <ProfileRatingsSection />
+
+        </div>
+
       </div>
 
       <EditProfileModal
@@ -47,6 +55,7 @@ function ProfilePage() {
       />
 
       <Footer />
+
     </main>
   );
 }
