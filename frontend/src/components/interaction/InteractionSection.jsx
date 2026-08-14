@@ -18,7 +18,7 @@ function InteractionSection({
       <div>
 
         <h2 className="text-2xl font-bold text-white sm:text-3xl">
-          🎬 Interact with this title
+          Interact with this title
         </h2>
 
         <p className="mt-2 max-w-2xl text-sm leading-6 text-gray-400 sm:text-base sm:leading-7">
