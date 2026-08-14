@@ -8,15 +8,16 @@ function SearchBar({
   onSearch,
 }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-      <div className="flex flex-col gap-4 md:flex-row">
+    <section className="w-full rounded-2xl border border-zinc-800 bg-zinc-900/80 p-4 sm:p-5">
+
+      <div className="flex w-full flex-col gap-3 sm:gap-4 lg:flex-row">
 
         {/* Search Input */}
-        <div className="relative flex-1">
+        <div className="relative min-w-0 flex-1">
 
           <Search
-            size={20}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"
+            size={19}
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500"
           />
 
           <input
@@ -29,17 +30,50 @@ function SearchBar({
                 onSearch();
               }
             }}
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-800 py-3 pl-12 pr-4 text-white outline-none transition focus:border-red-500"
+            className="
+              w-full
+              rounded-xl
+              border border-zinc-700
+              bg-zinc-800
+              py-3
+              pl-11
+              pr-4
+              text-sm
+              text-white
+              placeholder:text-zinc-500
+              outline-none
+              transition
+              focus:border-red-600
+              focus:ring-1
+              focus:ring-red-600
+              sm:text-base
+            "
           />
 
         </div>
 
         {/* Media Type */}
-
         <select
           value={type}
           onChange={(e) => setType(e.target.value)}
-          className="rounded-xl border border-zinc-700 bg-zinc-800 px-5 py-3 text-white outline-none focus:border-red-500"
+          className="
+            w-full
+            rounded-xl
+            border border-zinc-700
+            bg-zinc-800
+            px-4
+            py-3
+            text-sm
+            text-white
+            outline-none
+            transition
+            focus:border-red-600
+            focus:ring-1
+            focus:ring-red-600
+            sm:text-base
+            lg:w-40
+            lg:shrink-0
+          "
         >
           <option value="movie">
             Movies
@@ -48,20 +82,34 @@ function SearchBar({
           <option value="tv">
             TV Shows
           </option>
-
         </select>
 
         {/* Search Button */}
-
         <button
+          type="button"
           onClick={onSearch}
-          className="rounded-xl bg-red-600 px-8 py-3 font-medium text-white transition hover:bg-red-700"
+          className="
+            w-full
+            rounded-xl
+            bg-red-600
+            px-6
+            py-3
+            text-sm
+            font-semibold
+            text-white
+            transition
+            hover:bg-red-700
+            active:scale-[0.98]
+            sm:text-base
+            lg:w-auto
+            lg:shrink-0
+          "
         >
           Search
         </button>
 
       </div>
-    </div>
+    </section>
   );
 }
 

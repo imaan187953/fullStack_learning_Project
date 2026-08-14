@@ -12,57 +12,116 @@ function MediaCard({ media }) {
     media.media_type === "tv" ||
     media.mediaType === "tv";
 
+  const title = media.title || media.name;
+
+  const posterPath =
+    media.poster_path || media.posterPath;
+
+  const rating =
+    media.vote_average ??
+    media.voteAverage ??
+    0;
+
+  const releaseDate =
+    media.release_date ||
+    media.first_air_date ||
+    media.releaseDate ||
+    "";
+
   return (
     <Link
       to={isTV ? `/tv/${mediaId}` : `/movie/${mediaId}`}
-      className="group"
+      className="group block min-w-0"
     >
-      <div className="overflow-hidden rounded-xl bg-zinc-900 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-red-500/20">
+
+      <article
+        className="
+          min-w-0
+          overflow-hidden
+          rounded-xl
+          border
+          border-zinc-800
+          bg-zinc-900
+          transition
+          duration-300
+          hover:border-zinc-700
+          hover:shadow-lg
+          hover:shadow-red-950/20
+          sm:rounded-2xl
+          sm:hover:-translate-y-1
+        "
+      >
 
         {/* Poster */}
-        <div className="overflow-hidden">
-          <img
-            src={`${IMAGE_BASE_URL}${media.poster_path || media.posterPath}`}
-            alt={media.title || media.name}
-            className="h-80 w-full object-cover transition duration-500 group-hover:scale-110"
-          />
+        <div className="aspect-[2/3] w-full overflow-hidden bg-zinc-800">
+
+          {posterPath ? (
+            <img
+              src={`${IMAGE_BASE_URL}${posterPath}`}
+              alt={title}
+              loading="lazy"
+              className="
+                h-full
+                w-full
+                object-cover
+                transition
+                duration-500
+                sm:group-hover:scale-105
+              "
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center px-3 text-center text-xs text-zinc-500">
+              No Poster
+            </div>
+          )}
+
         </div>
 
         {/* Content */}
-        <div className="p-4">
+        <div className="min-w-0 p-2.5 sm:p-4">
 
-          <h3 className="truncate text-lg font-semibold text-white">
-            {media.title || media.name}
+          <h3
+            className="
+              truncate
+              text-sm
+              font-semibold
+              text-white
+              sm:text-base
+              lg:text-lg
+            "
+            title={title}
+          >
+            {title}
           </h3>
 
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-2 flex min-w-0 items-center justify-between gap-2 sm:mt-3">
 
-            <div className="flex items-center gap-1 text-yellow-400">
-              <Star size={16} fill="currentColor" />
+            {/* Rating */}
+            <div className="flex min-w-0 items-center gap-1 text-xs text-yellow-400 sm:text-sm">
+
+              <Star
+                size={14}
+                fill="currentColor"
+                className="shrink-0 sm:h-4 sm:w-4"
+              />
 
               <span>
-                {(
-                  media.vote_average ??
-                  media.voteAverage ??
-                  0
-                ).toFixed(1)}
+                {Number(rating).toFixed(1)}
               </span>
+
             </div>
 
-            <span className="text-sm text-gray-400">
-              {(
-                media.release_date ||
-                media.first_air_date ||
-                media.releaseDate ||
-                ""
-              ).slice(0, 4)}
+            {/* Year */}
+            <span className="shrink-0 text-xs text-zinc-500 sm:text-sm">
+              {releaseDate.slice(0, 4)}
             </span>
 
           </div>
 
         </div>
 
-      </div>
+      </article>
+
     </Link>
   );
 }
