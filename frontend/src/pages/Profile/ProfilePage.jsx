@@ -29,41 +29,47 @@ function ProfilePage() {
 
             <Navbar />
 
-            {/* Profile Content */}
-            <div
-                className="
-                    mx-auto
-                    w-full
-                    max-w-7xl
-                    space-y-8
-                    px-4
-                    pt-6
-                    pb-10
-                    sm:space-y-10
-                    sm:px-6
-                    sm:pt-8
-                    sm:pb-12
-                    lg:px-8
-                    lg:pt-10
-                "
-            >
+            {/* Content starts clearly below Navbar */}
+            <div className="w-full pt-6 sm:pt-8 lg:pt-10">
 
-                <ProfileHeader
-                    user={user}
-                    onEdit={() => setShowEditModal(true)}
-                />
+                <div
+                    className="
+                        mx-auto
+                        w-full
+                        max-w-7xl
+                        space-y-6
+                        px-3
+                        pb-10
+                        sm:space-y-8
+                        sm:px-6
+                        sm:pb-12
+                        lg:px-8
+                        lg:space-y-10
+                    "
+                >
 
-                <ProfileListsSection />
+                    <ProfileHeader
+                        user={user}
+                        onEdit={() =>
+                            setShowEditModal(true)
+                        }
+                    />
 
-                <ProfileReviewsSection />
+                    <ProfileListsSection />
 
-                <ProfileRatingsSection />
+                    <ProfileReviewsSection />
+
+                    <ProfileRatingsSection />
+
+                </div>
 
             </div>
 
             <EditProfileModal
                 isOpen={showEditModal}
-                onClose={() => setShowEditModal(false)}
+                onClose={() =>
+                    setShowEditModal(false)
+                }
             />
 
             <Footer />
