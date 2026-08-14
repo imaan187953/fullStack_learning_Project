@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
@@ -10,106 +10,82 @@ import AIInsights from "../../components/ai/AIInsights";
 import AIChatBox from "../../components/ai/AIChatBox";
 
 import {
-    generateRecommendations,
+  generateRecommendations,
 } from "../../services/recommendation.service";
 
 import {
-    saveRecommendations,
-    loadRecommendations,
+  saveRecommendations,
+  loadRecommendations,
 } from "../../utils/aiStorage";
 
 function AIRecommendationPage() {
-    const [loading, setLoading] =
-        useState(false);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
 
-    const [result, setResult] =
-        useState(null);
+  useEffect(() => {
+    const saved = loadRecommendations();
 
-    useEffect(() => {
-        const saved =
-            loadRecommendations();
+    if (saved) {
+      setResult(saved);
+    }
+  }, []);
 
-        if (saved) {
-            setResult(saved);
-        }
-    }, []);
+  const handleGenerate = async () => {
+    try {
+      setLoading(true);
 
-    const handleGenerate = async () => {
-        try {
-            setLoading(true);
+      const response = await generateRecommendations();
 
-            const response =
-                await generateRecommendations();
+      setResult(response.data);
 
-            console.log(
-                "FIRST RECOMMENDATION:",
-                response.data.recommendations[0]
-            );
+      saveRecommendations(response.data);
+    } catch (error) {
+      console.error(
+        "Recommendation generation failed:",
+        error
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            setResult(response.data);
+  return (
+    <main className="min-h-screen overflow-x-hidden bg-black text-white">
+      <Navbar />
 
-            saveRecommendations(response.data);
-        } catch (error) {
-            console.error(
-                "Recommendation generation failed:",
-                error
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-10 pt-24 sm:gap-8 sm:px-6 sm:pt-28 lg:gap-10 lg:px-8">
+        <RecommendationHero
+          onGenerate={handleGenerate}
+          loading={loading}
+        />
 
-    return (
-        <main className="min-h-screen bg-black">
-            <Navbar />
+        {loading && <LoadingAnalysis />}
 
-            <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 py-10">
+        {!loading && result && (
+          <>
+            <AIInsights
+              statistics={result.statistics}
+              favoriteGenres={result.favoriteGenres}
+              retrievedCount={result.retrievedCount}
+              generatedAt={result.generatedAt}
+            />
 
-                <RecommendationHero
-                    onGenerate={handleGenerate}
-                    loading={loading}
-                />
+            <AIChatBox />
 
-                {loading && (
-                    <LoadingAnalysis />
-                )}
+            <RecommendationGrid
+              recommendations={
+                Array.isArray(result.recommendations)
+                  ? result.recommendations
+                  : []
+              }
+            />
+          </>
+        )}
+      </div>
 
-                {!loading && result && (
-                    <>
-                        <AIInsights
-                            statistics={
-                                result.statistics
-                            }
-                            favoriteGenres={
-                                result.favoriteGenres
-                            }
-                            retrievedCount={
-                                result.retrievedCount
-                            }
-                            generatedAt={
-                                result.generatedAt
-                            }
-                        />
-
-                        <AIChatBox />
-
-                        <RecommendationGrid
-                            recommendations={
-                                Array.isArray(
-                                    result.recommendations
-                                )
-                                    ? result.recommendations
-                                    : []
-                            }
-                        />
-                    </>
-                )}
-
-            </div>
-
-            <Footer />
-        </main>
-    );
+      <Footer />
+    </main>
+  );
 }
 
 export default AIRecommendationPage;

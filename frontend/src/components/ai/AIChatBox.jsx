@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import {
   Sparkles,
   Send,
@@ -28,9 +29,7 @@ function AIChatBox() {
   const handleSubmit = async () => {
     const message = prompt.trim();
 
-    if (!message || loading) {
-      return;
-    }
+    if (!message || loading) return;
 
     setError("");
 
@@ -49,8 +48,7 @@ function AIChatBox() {
     setLoading(true);
 
     try {
-      const response =
-        await askCineTrackAI(message);
+      const response = await askCineTrackAI(message);
 
       const aiMessage = {
         id: Date.now() + 1,
@@ -65,10 +63,7 @@ function AIChatBox() {
         aiMessage,
       ]);
     } catch (error) {
-      console.error(
-        "AI Chat Error:",
-        error
-      );
+      console.error("AI Chat Error:", error);
 
       setError(
         error?.response?.data?.message ||
@@ -96,32 +91,38 @@ function AIChatBox() {
 
   return (
     <section className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
+
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-zinc-800 p-6">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10">
+      <div className="flex items-center justify-between gap-3 border-b border-zinc-800 p-4 sm:p-6">
+
+        <div className="flex min-w-0 items-center gap-3">
+
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-red-500/10 sm:h-11 sm:w-11">
             <Sparkles
-              size={22}
+              size={19}
               className="text-red-500"
             />
           </div>
 
-          <div>
-            <h2 className="text-2xl font-bold text-white">
+          <div className="min-w-0">
+
+            <h2 className="truncate text-lg font-bold text-white sm:text-2xl">
               Ask CineTrack AI
             </h2>
 
-            <p className="mt-1 text-sm text-zinc-500">
-              Ask for movie and TV recommendations
-              based on your taste.
+            <p className="mt-0.5 hidden text-xs text-zinc-500 sm:block sm:text-sm">
+              Ask for recommendations based on your taste.
             </p>
+
           </div>
+
         </div>
 
         {messages.length > 0 && (
           <button
             onClick={handleClear}
-            className="inline-flex items-center gap-2 rounded-lg border border-zinc-700 px-3 py-2 text-sm text-zinc-400 transition hover:border-red-500/50 hover:text-white"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-zinc-700 text-zinc-400 transition hover:border-red-500/50 hover:text-white sm:h-auto sm:w-auto sm:gap-2 sm:px-3 sm:py-2"
+            aria-label="Clear conversation"
           >
             <Trash2 size={16} />
 
@@ -130,11 +131,13 @@ function AIChatBox() {
             </span>
           </button>
         )}
+
       </div>
 
       {/* Conversation */}
       {messages.length > 0 && (
-        <div className="max-h-[500px] space-y-5 overflow-y-auto p-6">
+        <div className="max-h-[420px] space-y-4 overflow-y-auto p-4 sm:max-h-[500px] sm:p-6">
+
           {messages.map((message) => {
             const isUser =
               message.role === "user";
@@ -142,105 +145,115 @@ function AIChatBox() {
             return (
               <div
                 key={message.id}
-                className={`flex gap-3 ${
+                className={`flex min-w-0 gap-2 sm:gap-3 ${
                   isUser
                     ? "justify-end"
                     : "justify-start"
                 }`}
               >
+
                 {!isUser && (
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-500/10">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/10 sm:h-9 sm:w-9">
                     <Bot
-                      size={18}
+                      size={16}
                       className="text-red-500"
                     />
                   </div>
                 )}
 
                 <div
-                  className={`max-w-[85%] rounded-2xl px-4 py-3 sm:max-w-[75%] ${
+                  className={`min-w-0 max-w-[82%] rounded-2xl px-3.5 py-2.5 sm:max-w-[75%] sm:px-4 sm:py-3 ${
                     isUser
                       ? "rounded-br-md bg-red-600 text-white"
-                      : "rounded-bl-md bg-zinc-950 text-zinc-300"
+                      : "rounded-bl-md bg-black text-zinc-300"
                   }`}
                 >
-                  <p className="whitespace-pre-wrap text-sm leading-7">
+                  <p className="whitespace-pre-wrap break-words text-sm leading-6">
                     {message.content}
                   </p>
                 </div>
 
                 {isUser && (
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-zinc-800">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800 sm:h-9 sm:w-9">
                     <User
-                      size={18}
+                      size={16}
                       className="text-zinc-400"
                     />
                   </div>
                 )}
+
               </div>
             );
           })}
 
           {loading && (
-            <div className="flex gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-500/10">
+            <div className="flex gap-2 sm:gap-3">
+
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/10 sm:h-9 sm:w-9">
                 <Bot
-                  size={18}
+                  size={16}
                   className="text-red-500"
                 />
               </div>
 
-              <div className="flex items-center gap-2 rounded-2xl rounded-bl-md bg-zinc-950 px-5 py-4">
+              <div className="flex items-center gap-2 rounded-2xl rounded-bl-md bg-black px-4 py-3">
                 <LoaderCircle
-                  size={17}
+                  size={16}
                   className="animate-spin text-red-500"
                 />
 
-                <span className="text-sm text-zinc-500">
-                  CineTrack AI is thinking...
+                <span className="text-xs text-zinc-500 sm:text-sm">
+                  Thinking...
                 </span>
               </div>
+
             </div>
           )}
+
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Empty State */}
       {messages.length === 0 && (
-        <div className="p-6">
-          <div className="rounded-xl border border-dashed border-zinc-800 bg-black/50 p-8 text-center">
+        <div className="p-4 sm:p-6">
+
+          <div className="rounded-xl border border-dashed border-zinc-800 bg-black/50 p-6 text-center sm:p-8">
+
             <Sparkles
-              size={30}
+              size={26}
               className="mx-auto text-red-500"
             />
 
-            <h3 className="mt-4 font-semibold text-white">
+            <h3 className="mt-3 font-semibold text-white">
               What are you in the mood for?
             </h3>
 
-            <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-zinc-500">
+            <p className="mx-auto mt-2 max-w-lg text-xs leading-5 text-zinc-500 sm:text-sm sm:leading-6">
               Ask CineTrack AI about movies,
               TV shows, genres, themes, or
               specific titles.
             </p>
+
           </div>
+
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="mx-6 mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="mx-4 mb-4 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-xs leading-5 text-red-400 sm:mx-6 sm:text-sm">
           {error}
         </div>
       )}
 
       {/* Suggestions */}
-      <div className="px-6 pb-4">
-        <p className="mb-3 text-xs font-medium uppercase tracking-wide text-zinc-600">
+      <div className="px-4 pb-4 sm:px-6">
+
+        <p className="mb-3 text-[10px] font-medium uppercase tracking-wider text-zinc-600 sm:text-xs">
           Try asking
         </p>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
           {suggestions.map((item) => (
             <PromptChip
               key={item}
@@ -249,11 +262,14 @@ function AIChatBox() {
             />
           ))}
         </div>
+
       </div>
 
       {/* Input */}
-      <div className="border-t border-zinc-800 p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+      <div className="border-t border-zinc-800 p-4 sm:p-6">
+
+        <div className="flex flex-col gap-3">
+
           <textarea
             rows={3}
             value={prompt}
@@ -262,24 +278,22 @@ function AIChatBox() {
             }
             onKeyDown={handleKeyDown}
             disabled={loading}
-            placeholder="Example: Recommend emotional science-fiction movies with strong storytelling..."
-            className="min-h-[90px] flex-1 resize-none rounded-xl border border-zinc-700 bg-black p-4 text-sm leading-6 text-white outline-none transition placeholder:text-zinc-600 focus:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"
+            placeholder="Ask CineTrack AI..."
+            className="min-h-[82px] w-full resize-none rounded-xl border border-zinc-700 bg-black p-3.5 text-sm leading-6 text-white outline-none transition placeholder:text-zinc-600 focus:border-red-500 disabled:cursor-not-allowed disabled:opacity-60 sm:min-h-[90px] sm:p-4"
           />
 
           <button
             onClick={handleSubmit}
-            disabled={
-              !prompt.trim() || loading
-            }
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3 font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50 sm:h-[50px]"
+            disabled={!prompt.trim() || loading}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 font-semibold text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:self-end"
           >
             {loading ? (
               <LoaderCircle
-                size={18}
+                size={17}
                 className="animate-spin"
               />
             ) : (
-              <Send size={18} />
+              <Send size={17} />
             )}
 
             <span>
@@ -288,13 +302,15 @@ function AIChatBox() {
                 : "Ask AI"}
             </span>
           </button>
+
         </div>
 
-        <p className="mt-3 text-xs text-zinc-600">
-          Press Enter to send • Shift + Enter
-          for a new line
+        <p className="mt-3 hidden text-xs text-zinc-600 sm:block">
+          Press Enter to send • Shift + Enter for a new line
         </p>
+
       </div>
+
     </section>
   );
 }

@@ -6,36 +6,30 @@ function InsightItem({
   value,
 }) {
   return (
-    <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-900 px-5 py-4">
+    <div className="flex min-w-0 items-center gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-4 sm:gap-4 sm:px-5 sm:py-4">
 
-      <div className="flex items-center gap-4">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-800 sm:h-10 sm:w-10">
+        <Icon
+          size={17}
+          className="text-red-500"
+        />
+      </div>
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800">
+      <div className="min-w-0 flex-1">
 
-          <Icon
-            size={18}
-            className="text-red-500"
-          />
+        <p className="text-xs text-zinc-500">
+          {title}
+        </p>
 
-        </div>
-
-        <div>
-
-          <p className="text-sm text-zinc-500">
-            {title}
-          </p>
-
-          <p className="font-semibold text-white">
-            {value}
-          </p>
-
-        </div>
+        <p className="mt-1 break-words text-sm font-semibold leading-5 text-white sm:text-base">
+          {value}
+        </p>
 
       </div>
 
       <ChevronRight
-        size={18}
-        className="text-zinc-700"
+        size={16}
+        className="shrink-0 text-zinc-700"
       />
 
     </div>

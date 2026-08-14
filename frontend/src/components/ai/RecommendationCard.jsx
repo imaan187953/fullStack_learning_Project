@@ -26,10 +26,10 @@ function RecommendationCard({
 
   const genres = genre
     ? genre
-      .split(",")
-      .slice(0, 3)
-      .map((item) => item.trim())
-      .filter(Boolean)
+        .split(",")
+        .slice(0, 3)
+        .map((item) => item.trim())
+        .filter(Boolean)
     : [];
 
   const detailRoute =
@@ -42,100 +42,96 @@ function RecommendationCard({
   );
 
   return (
-    <article className="group overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition duration-300 hover:-translate-y-1 hover:border-red-500/40">
+    <article className="group min-w-0 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 transition duration-300 hover:border-red-500/40 sm:hover:-translate-y-1">
 
       {/* Poster */}
       <div className="relative aspect-[2/3] overflow-hidden bg-zinc-950">
+
         {posterUrl ? (
           <img
             src={posterUrl}
             alt={title}
+            loading="lazy"
             className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-            onLoad={() => {
-              console.log("POSTER LOADED:", posterUrl);
-            }}
-            onError={(error) => {
-              console.error("POSTER FAILED:", posterUrl);
-            }}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             {mediaType === "movie" ? (
               <Film
-                size={48}
+                size={42}
                 className="text-zinc-700"
               />
             ) : (
               <Tv
-                size={48}
+                size={42}
                 className="text-zinc-700"
               />
             )}
           </div>
         )}
 
-        {/* Match badge */}
-        <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full border border-red-500/30 bg-black/80 px-3 py-1.5 text-sm font-semibold text-red-400 backdrop-blur">
-          <Sparkles size={14} />
-
-          {confidencePercent}% Match
+        {/* Match */}
+        <div className="absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full border border-red-500/20 bg-black/80 px-2.5 py-1 text-[11px] font-semibold text-red-400 backdrop-blur sm:right-3 sm:top-3 sm:px-3 sm:py-1.5 sm:text-xs">
+          <Sparkles size={12} />
+          {confidencePercent}%
         </div>
+
       </div>
 
       {/* Content */}
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
 
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <h3 className="text-xl font-semibold text-white">
-              {title}
-            </h3>
+        <h3 className="truncate text-lg font-semibold text-white sm:text-xl">
+          {title}
+        </h3>
 
-            <p className="mt-1 text-sm capitalize text-zinc-500">
-              {mediaType === "tv"
-                ? "TV Series"
-                : "Movie"}
-            </p>
-          </div>
-        </div>
+        <p className="mt-1 text-xs capitalize text-zinc-500 sm:text-sm">
+          {mediaType === "tv"
+            ? "TV Series"
+            : "Movie"}
+        </p>
 
         {/* Genres */}
         {genres.length > 0 && (
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-3 flex flex-wrap gap-1.5">
+
             {genres.map((item) => (
               <span
                 key={item}
-                className="rounded-full border border-zinc-700 bg-zinc-950 px-3 py-1 text-xs text-zinc-400"
+                className="max-w-full truncate rounded-full border border-zinc-700 bg-zinc-950 px-2.5 py-1 text-[10px] text-zinc-400 sm:text-xs"
               >
                 {item}
               </span>
             ))}
+
           </div>
         )}
 
         {/* Reason */}
         {reason && (
-          <div className="mt-5">
-            <p className="text-xs font-medium uppercase tracking-wide text-red-500">
+          <div className="mt-4">
+
+            <p className="text-[10px] font-medium uppercase tracking-wider text-red-500 sm:text-xs">
               Why you'll like it
             </p>
 
-            <p className="mt-2 line-clamp-3 text-sm leading-6 text-zinc-400">
+            <p className="mt-1.5 line-clamp-3 text-xs leading-5 text-zinc-400 sm:text-sm sm:leading-6">
               {reason}
             </p>
+
           </div>
         )}
 
-        {/* Details */}
         <Link
           to={detailRoute}
-          className="mt-6 inline-flex items-center gap-2 font-medium text-red-500 transition group-hover:gap-3"
+          className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-red-500 transition group-hover:gap-2.5"
         >
           View Details
-
-          <ArrowRight size={18} />
+          <ArrowRight size={16} />
         </Link>
+
       </div>
+
     </article>
   );
 }
