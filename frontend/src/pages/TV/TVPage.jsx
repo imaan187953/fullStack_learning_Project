@@ -12,55 +12,45 @@ import RatingSummary from "../../components/ratings/RatingSummary";
 import ReviewsSection from "../../components/reviews/ReviewsSection";
 
 function TVPage() {
-
   const { id } = useParams();
 
   const [tv, setTV] = useState(null);
 
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
 
   const [showAddModal, setShowAddModal] =
     useState(false);
 
-  const [showReviewModal, setShowReviewModal] = useState(false);
-
+  const [showReviewModal, setShowReviewModal] =
+    useState(false);
 
   const [activeTab, setActiveTab] =
     useState("overview");
 
   useEffect(() => {
-
     const fetchTV = async () => {
-
       try {
-
         setLoading(true);
+        setError("");
 
         const response = await getTVDetails(id);
 
         setTV(response.tv);
-
       } catch (error) {
-
+        console.error(error);
         setError("Unable to load TV show.");
-
       } finally {
-
         setLoading(false);
-
       }
-
     };
 
     fetchTV();
-
   }, [id]);
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-white">
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-center text-white">
         Loading TV Show...
       </div>
     );
@@ -68,15 +58,20 @@ function TVPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-zinc-950 text-red-500">
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-center text-red-500">
         {error}
       </div>
     );
   }
 
-  return (
-    <main className="min-h-screen bg-zinc-950">
+  if (!tv) {
+    return null;
+  }
 
+  return (
+    <main className="min-h-screen w-full overflow-x-hidden bg-zinc-950">
+
+      {/* Hero */}
       <TVHero
         tv={tv}
         onAddToList={() =>
@@ -84,43 +79,53 @@ function TVPage() {
         }
       />
 
-      <MediaTabs
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
+      {/* Tabs + Interactions */}
+      <div className="w-full overflow-x-hidden">
+        <MediaTabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
 
-        overview={
-          <InteractionSection
-            onAddToList={() => setShowAddModal(true)}
+          overview={
+            <InteractionSection
+              onAddToList={() =>
+                setShowAddModal(true)
+              }
 
-            onRate={() => {
-              setActiveTab("ratings");
-            }}
+              onRate={() => {
+                setActiveTab("ratings");
+              }}
 
-            onReview={() => {
-              setActiveTab("reviews");
-              setShowReviewModal(true);
-            }}
-          />
-        }
+              onReview={() => {
+                setActiveTab("reviews");
+                setShowReviewModal(true);
+              }}
+            />
+          }
 
-        reviews={
-          <ReviewsSection
-            mediaId={tv._id}
-            showModal={showReviewModal}
-            onCloseModal={() => setShowReviewModal(false)}
-          />
-        }
+          reviews={
+            <ReviewsSection
+              mediaId={tv._id}
+              showModal={showReviewModal}
+              onCloseModal={() =>
+                setShowReviewModal(false)
+              }
+            />
+          }
 
-        ratings={
-          <RatingSummary
-            mediaId={tv._id}
-          />
-        }
-      />
+          ratings={
+            <RatingSummary
+              mediaId={tv._id}
+            />
+          }
+        />
+      </div>
 
+      {/* Add To List */}
       <AddToListModal
         isOpen={showAddModal}
-        onClose={() => setShowAddModal(false)}
+        onClose={() =>
+          setShowAddModal(false)
+        }
         tmdbId={tv.tmdbId}
         mediaType="tv"
       />
