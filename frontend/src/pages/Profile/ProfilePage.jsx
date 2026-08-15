@@ -18,7 +18,7 @@ function ProfilePage() {
 
     if (!user) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-black text-white">
+            <div className="flex min-h-screen items-center justify-center bg-black px-4 text-sm text-white">
                 Loading...
             </div>
         );
@@ -29,39 +29,25 @@ function ProfilePage() {
 
             <Navbar />
 
-            {/* Content starts clearly below Navbar */}
-            <div className="w-full pt-6 sm:pt-8 lg:pt-10">
+            {/* Main Content */}
+            <div className="mx-auto w-full max-w-7xl space-y-8 px-3 pb-8 pt-18 sm:space-y-10 sm:px-5 sm:pb-10 sm:pt-20 md:px-6 lg:space-y-14 lg:px-8 lg:pb-14">
 
-                <div
-                    className="
-                        mx-auto
-                        w-full
-                        max-w-7xl
-                        space-y-6
-                        px-3
-                        pb-10
-                        sm:space-y-8
-                        sm:px-6
-                        sm:pb-12
-                        lg:px-8
-                        lg:space-y-10
-                    "
-                >
+                {/* Profile Header */}
+                <ProfileHeader
+                    user={user}
+                    onEdit={() =>
+                        setShowEditModal(true)
+                    }
+                />
 
-                    <ProfileHeader
-                        user={user}
-                        onEdit={() =>
-                            setShowEditModal(true)
-                        }
-                    />
+                {/* My Lists */}
+                <ProfileListsSection />
 
-                    <ProfileListsSection />
+                {/* My Reviews */}
+                <ProfileReviewsSection />
 
-                    <ProfileReviewsSection />
-
-                    <ProfileRatingsSection />
-
-                </div>
+                {/* My Ratings */}
+                <ProfileRatingsSection />
 
             </div>
 

@@ -92,52 +92,26 @@ function AIRecommendationPage() {
 
             <Navbar />
 
+            {/* Main Content */}
+            <div className="mx-auto w-full max-w-7xl space-y-8 px-3 pb-8 pt-18 sm:space-y-10 sm:px-5 sm:pb-10 sm:pt-20 md:px-6 lg:space-y-14 lg:px-8 lg:pb-14">
 
-            <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-10 pt-24 sm:px-6 sm:pt-28">
-
-
-                {/* =========================================
-                    HERO
-                ========================================= */}
-
+                {/* AI Hero */}
                 <RecommendationHero
                     onGenerate={handleGenerate}
                     loading={loading}
                 />
 
-
-                {/* =========================================
-                    AI CHAT
-
-                    Always visible.
-                    User does NOT need to generate
-                    recommendations first.
-                ========================================= */}
-
+                {/* AI Chat - Always Visible */}
                 <AIChatBox />
 
-
-                {/* =========================================
-                    LOADING ANALYSIS
-
-                    Only visible while recommendations
-                    are being generated.
-                ========================================= */}
-
+                {/* Loading Analysis */}
                 {loading && (
                     <LoadingAnalysis />
                 )}
 
-
-                {/* =========================================
-                    GENERATED RESULTS
-                ========================================= */}
-
+                {/* Generated Results */}
                 {!loading && result && (
                     <>
-
-                        {/* AI INSIGHTS */}
-
                         <AIInsights
                             statistics={
                                 result.statistics
@@ -153,9 +127,6 @@ function AIRecommendationPage() {
                             }
                         />
 
-
-                        {/* RECOMMENDATIONS */}
-
                         <RecommendationGrid
                             recommendations={
                                 Array.isArray(
@@ -165,12 +136,10 @@ function AIRecommendationPage() {
                                     : []
                             }
                         />
-
                     </>
                 )}
 
             </div>
-
 
             <Footer />
 
