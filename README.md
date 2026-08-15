@@ -29,11 +29,11 @@ CineTrack takes a more personalized approach.
 
 It uses signals from a user's:
 
--   ⭐ Ratings
--   📝 Reviews
--   📚 Custom lists
--   🎭 Favorite genres
--   🧠 Semantic relationships between preferences and media
+-   Ratings
+-   Reviews
+-   Custom lists
+-   Favorite genres
+-   Semantic relationships between preferences and media
 
 These signals are transformed into a user preference profile and passed
 through a semantic retrieval and local AI pipeline.
@@ -113,11 +113,11 @@ acts as a personal movie and TV library.
 
 Users can interact with media through:
 
--   ⭐ Personal ratings
--   📝 Reviews
--   ✏️ Review editing
--   🗑️ Review management
--   📖 Personal viewing preferences
+-   Personal ratings
+-   Reviews
+-   Review editing
+-   Review management
+-   Personal viewing preferences
 
 These interactions are stored as part of the user's profile and also
 provide important signals for the AI recommendation system.
@@ -215,7 +215,7 @@ locally running AI components:
 
 ------------------------------------------------------------------------
 
-# 💬 CineTrack AI Chat
+# CineTrack AI Chat
 
 CineTrack also provides an AI chat interface where users can ask
 natural-language questions about movies and TV shows.
@@ -238,7 +238,7 @@ list.
 
 ------------------------------------------------------------------------
 
-# 🧠 Why RAG?
+# Why RAG?
 
 A traditional LLM recommendation approach might simply ask:
 
@@ -271,7 +271,7 @@ The result is a recommendation pipeline that combines:
 
 ------------------------------------------------------------------------
 
-# 🔄 Recommendation Generation Workflow
+#  Recommendation Generation Workflow
 
 When a user requests new recommendations:
 
@@ -309,7 +309,7 @@ The generated recommendations include information such as:
 
 ------------------------------------------------------------------------
 
-# 🖥️ Frontend Modules
+# Frontend Modules
 
 ## Landing Page
 
@@ -377,7 +377,7 @@ Provides:
 
 ------------------------------------------------------------------------
 
-# 🏗️ System Architecture
+#  System Architecture
 
 At a high level, CineTrack follows a modular full-stack architecture:
 
@@ -429,7 +429,7 @@ This keeps the project modular and easier to maintain and extend.
 
 ------------------------------------------------------------------------
 
-# 🛠️ Technology Stack
+#  Technology Stack
 
 ## Frontend
 
@@ -484,7 +484,7 @@ TMDB provides data including:
 
 ------------------------------------------------------------------------
 
-# 🗄️ Database Design
+#  Database Design
 
 CineTrack uses **MongoDB with Mongoose** for application data.
 
@@ -505,7 +505,7 @@ Qdrant handles vector-based similarity search.
 
 ------------------------------------------------------------------------
 
-# 🔐 Authentication & Security
+# Authentication & Security
 
 CineTrack implements authentication using:
 
@@ -521,7 +521,7 @@ through environment variables.
 
 ------------------------------------------------------------------------
 
-# 📁 Project Structure
+#  Project Structure
 
 A simplified high-level structure:
 
@@ -565,7 +565,7 @@ CineTrack/
 
 ------------------------------------------------------------------------
 
-# 🧩 Backend Architecture
+#  Backend Architecture
 
 The backend follows a modular, service-oriented structure.
 
@@ -590,7 +590,7 @@ The AI functionality is further separated into services for:
 
 ------------------------------------------------------------------------
 
-# 🎯 Project Goals
+#  Project Goals
 
 CineTrack was designed around several engineering and product goals.
 
@@ -631,7 +631,7 @@ and mobile devices.
 
 ------------------------------------------------------------------------
 
-# 📊 Current Project Status
+# Current Project Status
 
 CineTrack currently includes the core full-stack functionality:
 
@@ -657,7 +657,7 @@ CineTrack currently includes the core full-stack functionality:
 
 ------------------------------------------------------------------------
 
-# 🔮 Future Improvements
+#  Future Improvements
 
 Potential future improvements include:
 
@@ -675,7 +675,7 @@ Potential future improvements include:
 
 ------------------------------------------------------------------------
 
-# 💡 Technical Highlights
+#  Technical Highlights
 
 CineTrack demonstrates practical implementation of several modern
 software engineering concepts:
@@ -715,7 +715,7 @@ Software Architecture
 
 ------------------------------------------------------------------------
 
-# 🧪 Example User Journey
+#  Example User Journey
 
 A typical CineTrack experience can look like:
 
@@ -748,7 +748,7 @@ richer understanding of their preferences.
 
 ------------------------------------------------------------------------
 
-# ⚙️ Getting Started
+# Getting Started
 
 ## Prerequisites
 
@@ -836,7 +836,7 @@ The exact scripts may vary depending on the project's current
 
 ------------------------------------------------------------------------
 
-# 🌟 What This Project Demonstrates
+#  What This Project Demonstrates
 
 CineTrack brings together several areas of modern application
 development in a single project:
@@ -863,7 +863,7 @@ recommendations, and a user-centered discovery experience.
 
 ------------------------------------------------------------------------
 
-# 👨‍💻 Project
+# Project
 
 **CineTrack** is an ongoing full-stack project focused on combining
 modern web development with practical local AI engineering.
@@ -873,7 +873,7 @@ modern web development with practical local AI engineering.
 
 ------------------------------------------------------------------------
 
-## 📄 License
+##  License
 
 This project is currently intended for educational and development
 purposes.
