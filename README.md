@@ -1,553 +1,879 @@
-# 🎬 CineTrack Backend
+# 🎬 CineTrack
 
-> A Full Stack RESTful Backend for Managing Movies and TV Shows with AI-Powered Recommendations.
+### A Full-Stack Movie & TV Tracking Platform with Local AI-Powered Recommendations
 
-## 📖 Introduction
+CineTrack is a full-stack movie and TV discovery platform built to give
+users a more personal way to **discover, track, organize, rate, review,
+and share** the content they love.
 
-The backend of **CineTrack** was developed using a modern RESTful architecture with **Node.js**, **Express.js**, and **MongoDB Atlas**.
+Users can search for movies and TV shows, create custom lists, rate and
+review titles, manage their personal library, and **share their lists
+with friends through shareable links**.
 
-It provides:
+At the heart of CineTrack is a local AI recommendation system that
+combines **user behavior, semantic search, vector embeddings,
+Retrieval-Augmented Generation (RAG), and a locally running LLM** to
+produce recommendations tailored to each user's taste.
 
-- 🔐 Secure JWT Authentication
-- 🎬 Movie & TV Show Management
-- ⭐ Ratings & Reviews
-- 📚 Custom User Lists
-- 🤖 AI-Powered Recommendations using Google Gemini
-- 🎥 TMDB API Integration
-- ☁️ MongoDB Atlas Cloud Database
+>  **CineTrack doesn't just ask what's popular --- it learns what you
+> like.**
 
-The project follows a modular architecture by separating **Models**, **Controllers**, **Routes**, **Services**, **Middleware**, and **Configuration** files to improve maintainability and scalability.
+------------------------------------------------------------------------
 
----
+##  Why CineTrack?
 
-# 🚀 Tech Stack
+Most movie platforms focus heavily on popularity, ratings, or simple
+genre matching.
 
-| Technology | Purpose |
-|------------|---------|
-| Node.js | Backend Runtime |
-| Express.js | REST API Framework |
-| MongoDB Atlas | Cloud Database |
-| Mongoose | ODM |
-| JWT | Authentication |
-| bcrypt.js | Password Hashing |
-| Axios | API Requests |
-| TMDB API | Movie & TV Data |
-| Google Gemini API | AI Recommendations |
-| Thunder Client | API Testing |
+CineTrack takes a more personalized approach.
 
----
+It uses signals from a user's:
 
-# 📂 Project Structure
+-   ⭐ Ratings
+-   📝 Reviews
+-   📚 Custom lists
+-   🎭 Favorite genres
+-   🧠 Semantic relationships between preferences and media
 
-```text
-src/
-│
-├── config/
-│   ├── db.js
-│   └── gemini.js
-│
-├── controllers/
-│   ├── auth.controller.js
-│   ├── list.controller.js
-│   ├── media.controller.js
-│   ├── listItem.controller.js
-│   ├── rating.controller.js
-│   ├── review.controller.js
-│   └── aiRecommendation.controller.js
-│
-├── middleware/
-│   └── auth.middleware.js
-│
-├── models/
-│   ├── user.model.js
-│   ├── list.model.js
-│   ├── listItem.model.js
-│   ├── media.model.js
-│   ├── rating.model.js
-│   └── review.model.js
-│
-├── routes/
-│   ├── auth.routes.js
-│   ├── list.routes.js
-│   ├── media.routes.js
-│   ├── listItem.routes.js
-│   ├── rating.routes.js
-│   ├── review.routes.js
-│   └── aiRecommendation.routes.js
-│
-├── services/
-│   ├── tmdb.service.js
-│   └── aiRecommendation.service.js
-│
-├── utils/
-│   └── generateToken.js
-│
-├── app.js
-└── server.js
+These signals are transformed into a user preference profile and passed
+through a semantic retrieval and local AI pipeline.
+
+``` text
+User Activity
+     ↓
+Preference Profile
+     ↓
+Embeddings
+     ↓
+Qdrant Vector Search
+     ↓
+Relevant Media
+     ↓
+RAG Prompt
+     ↓
+Local LLM
+     ↓
+Personalized Recommendations
 ```
 
----
+This allows CineTrack to recommend content based on the **context and
+meaning of a user's interests**, rather than relying only on predefined
+categories.
 
-# 🗄️ Database Models
+------------------------------------------------------------------------
 
-## 👤 User
+#  Core Features
 
-Stores registered user information.
+## 🎥 Movie & TV Discovery
 
-**Fields**
+CineTrack integrates with **The Movie Database (TMDB)** to provide rich
+movie and TV information.
 
-- Username
-- Email
-- Password (Hashed)
-- Display Name
-- Profile Picture
-- Bio
-- Email Verification Status
+Users can:
 
----
+-   Search movies
+-   Search TV shows
+-   Browse trending movies
+-   Browse trending TV shows
+-   View movie details
+-   View TV show details
+-   View posters and backdrops
+-   Explore genres, ratings, release dates, and overviews
 
-## 📚 List
+------------------------------------------------------------------------
 
-Stores custom lists created by users.
+## 📚 Personal Lists & Library
+
+Users can organize their media into custom lists.
 
 Examples:
 
-- Favorites
-- Watch Later
-- Nolan Collection
-- Horror Movies
-
-Each list belongs to one user.
-
----
-
-## 🎬 Media
-
-Stores cached information retrieved from TMDB.
-
-Supports:
-
-- Movies
-- TV Shows
-- Seasons
-
-The Media collection acts as a local cache to reduce unnecessary TMDB API requests.
-
----
-
-## 🔗 ListItem
-
-Acts as a junction table between **Lists** and **Media**.
-
-A single movie or TV show can belong to multiple lists.
-
----
-
-## ⭐ Rating
-
-Stores user ratings.
-
-- User
-- Media
-- Rating Value
-
----
-
-## ✍️ Review
-
-Stores written reviews.
-
-- User
-- Media
-- Review Text
-
----
-
-# 🔐 Authentication Flow
-
-```text
-User Login
-     │
-     ▼
-Verify Email
-     │
-     ▼
-Compare Password (bcrypt)
-     │
-     ▼
-Generate JWT
-     │
-     ▼
-Return Token
+``` text
+Favorite Movies
+Watch Later
+Best TV Shows
+Feel-Good Movies
+Sci-Fi Collection
 ```
 
-Protected routes use authentication middleware that:
+Users can:
 
-- Verifies JWT
-- Decodes the User ID
-- Retrieves the User
-- Attaches the User to `req.user`
+-   Create custom lists
+-   Add movies and TV shows to lists
+-   View and manage their lists
+-   Organize content around their own interests
+-   Share lists with friends using shareable links
 
----
+This makes CineTrack more than a recommendation application --- it also
+acts as a personal movie and TV library.
 
-# 📡 REST APIs
+------------------------------------------------------------------------
+
+## ⭐ Ratings & Reviews
+
+Users can interact with media through:
+
+-   ⭐ Personal ratings
+-   📝 Reviews
+-   ✏️ Review editing
+-   🗑️ Review management
+-   📖 Personal viewing preferences
+
+These interactions are stored as part of the user's profile and also
+provide important signals for the AI recommendation system.
+
+------------------------------------------------------------------------
+
+## 👤 User Profiles
+
+Each user has a personal profile containing:
+
+-   Profile information
+-   Personal lists
+-   Reviews
+-   Ratings
+-   Media preferences
+
+The profile acts as the foundation for understanding a user's taste.
+
+------------------------------------------------------------------------
+
+# 🤖 Local AI Recommendation System
+
+The most distinctive part of CineTrack is its **local AI recommendation
+architecture**.
+
+Instead of depending entirely on a cloud AI provider, CineTrack uses
+locally running AI components:
+
+-   **Ollama** --- local model runtime
+-   **Qwen2.5** --- local LLM for recommendations and AI chat
+-   **nomic-embed-text** --- embedding model
+-   **Qdrant** --- vector database
+-   **RAG** --- context-aware retrieval and generation
+
+### AI Pipeline
+
+``` text
+                    ┌─────────────────────┐
+                    │        User         │
+                    └──────────┬──────────┘
+                               │
+                               ▼
+                 ┌─────────────────────────┐
+                 │ Ratings / Reviews /     │
+                 │ Lists / User Activity   │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Preference Builder      │
+                 │                         │
+                 │ User Taste Profile      │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Ollama Embeddings       │
+                 │                         │
+                 │ nomic-embed-text        │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Qdrant                  │
+                 │                         │
+                 │ Semantic Vector Search  │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Relevant Media          │
+                 │ Retrieval               │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Prompt Builder          │
+                 │                         │
+                 │ Profile + RAG Context   │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Local LLM               │
+                 │                         │
+                 │ Qwen2.5                 │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │ Personalized            │
+                 │ Recommendations         │
+                 └─────────────────────────┘
+```
+
+------------------------------------------------------------------------
+
+# 💬 CineTrack AI Chat
+
+CineTrack also provides an AI chat interface where users can ask
+natural-language questions about movies and TV shows.
+
+Example prompts:
+
+``` text
+Movies like Interstellar
+Dark psychological thrillers
+Best TV shows under 3 seasons
+Hidden sci-fi gems
+Feel-good comedies
+```
+
+The chat system uses the same general preference and retrieval
+architecture to provide context-aware responses.
+
+Users can interact with the AI without first generating a recommendation
+list.
+
+------------------------------------------------------------------------
+
+# 🧠 Why RAG?
+
+A traditional LLM recommendation approach might simply ask:
+
+``` text
+Recommend movies for this user.
+```
+
+CineTrack instead retrieves relevant media before asking the LLM to
+generate recommendations.
+
+``` text
+User Preferences
+       +
+Retrieved Media
+       +
+Recommendation Prompt
+       ↓
+     Local LLM
+       ↓
+Relevant Recommendations
+```
+
+This gives the model access to a focused set of candidate titles instead
+of asking it to generate recommendations from general model knowledge
+alone.
+
+The result is a recommendation pipeline that combines:
+
+**Personalization + Semantic Retrieval + Generative AI**
+
+------------------------------------------------------------------------
+
+# 🔄 Recommendation Generation Workflow
+
+When a user requests new recommendations:
+
+``` text
+1. User clicks "Generate Recommendations"
+                    ↓
+2. CineTrack loads user activity
+                    ↓
+3. Ratings / Reviews / Lists
+   are converted into a preference profile
+                    ↓
+4. Preference profile is embedded
+                    ↓
+5. Qdrant performs semantic retrieval
+                    ↓
+6. Relevant media are retrieved
+                    ↓
+7. Recommendation prompt is constructed
+                    ↓
+8. Qwen2.5 generates recommendations
+                    ↓
+9. Structured recommendations are returned
+                    ↓
+10. React displays personalized results
+```
+
+The generated recommendations include information such as:
+
+-   Title
+-   Media type
+-   Genre
+-   Match confidence
+-   Explanation of why the title may suit the user
+-   Poster
+
+------------------------------------------------------------------------
+
+# 🖥️ Frontend Modules
+
+## Landing Page
+
+Introduces CineTrack and highlights the platform's main capabilities.
 
 ## Authentication
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/auth/register` | Register User |
-| POST | `/api/auth/login` | Login User |
-| GET | `/api/auth/profile` | Get Profile |
-| PUT | `/api/auth/profile` | Update Profile |
-| DELETE | `/api/auth/profile` | Delete Account |
+-   Login
+-   Registration
+-   Authentication state management
+-   Protected application areas
+
+## Home
+
+Provides a central discovery experience with:
+
+-   Personalized hero section
+-   User lists
+-   Trending movies
+-   Trending TV shows
+
+## Search
+
+Users can search for:
+
+-   Movies
+-   TV shows
+
+Search results are displayed using reusable media cards and remain
+available when navigating back from a media details page.
+
+## Movie Details
+
+Provides detailed movie information together with user interactions such
+as lists, ratings, and reviews.
+
+## TV Details
+
+Provides detailed TV show information and related user interactions.
 
 ## Lists
 
-| Method | Endpoint |
-|--------|----------|
-| POST | `/api/lists` |
-| GET | `/api/lists` |
-| PUT | `/api/lists/:id` |
-| DELETE | `/api/lists/:id` |
+Allows users to create and manage personal media collections and share
+lists with friends.
 
-## List Items
+## Profile
 
-| Method | Endpoint |
-|--------|----------|
-| POST | `/api/list-items` |
-| GET | `/api/list-items/:listId` |
-| DELETE | `/api/list-items/:id` |
+Contains:
 
-## Media
+-   User information
+-   Personal lists
+-   Reviews
+-   Ratings
 
-| Method | Endpoint |
-|--------|----------|
-| GET | `/api/media/search/movie?q=` |
-| GET | `/api/media/search/tv?q=` |
-| GET | `/api/media/movie/:id` |
-| GET | `/api/media/tv/:id` |
-| GET | `/api/media/tv/:tvId/season/:seasonNumber` |
-| GET | `/api/media/trending` |
+## AI Recommendations
 
-## Ratings
+Provides:
 
-| Method | Endpoint |
-|--------|----------|
-| POST | `/api/ratings` |
-| GET | `/api/ratings/:mediaId` |
-| PATCH | `/api/ratings/:ratingId` |
-| DELETE | `/api/ratings/:ratingId` |
+-   Personalized recommendation generation
+-   AI insights
+-   Semantic match information
+-   Recommendation confidence
+-   Explanations for recommendations
+-   AI chat
 
-## Reviews
+------------------------------------------------------------------------
 
-| Method | Endpoint |
-|--------|----------|
-| POST | `/api/reviews` |
-| GET | `/api/reviews/media/:mediaId` |
-| GET | `/api/reviews/my/:mediaId` |
-| PATCH | `/api/reviews/:reviewId` |
-| DELETE | `/api/reviews/:reviewId` |
+# 🏗️ System Architecture
 
-## AI Recommendation
+At a high level, CineTrack follows a modular full-stack architecture:
 
-| Method | Endpoint |
-|--------|----------|
-| GET | `/api/ai` |
-
-The AI analyzes:
-
-- User Lists
-- Ratings
-- Reviews
-
-and generates personalized movie and TV show recommendations.
-
----
-
----
-
-# 📋 CRUD Operations Summary
-
-| Module | Create | Read | Update | Delete |
-|---------|:------:|:----:|:------:|:------:|
-| 👤 User | ✅ | ✅ | ✅ | ✅ |
-| 📚 Lists | ✅ | ✅ | ✅ | ✅ |
-| 🔗 List Items | ✅ | ✅ | — | ✅ |
-| 🎬 Media | Cache | ✅ | — | — |
-| ⭐ Ratings | ✅ | ✅ | ✅ | ✅ |
-| ✍️ Reviews | ✅ | ✅ | ✅ | ✅ |
-
-> **Note:** The **List Items** module only supports **Create**, **Read**, and **Delete** operations. An update operation is not applicable because a `ListItem` only represents the relationship between a **List** and a **Media** item.
-
----
-
-# 🌐 External API Integration
-
-## 🎬 TMDB API
-
-The backend integrates with **The Movie Database (TMDB)** to retrieve:
-
-- Movies
-- TV Shows
-- Seasons
-- Posters
-- Genres
-- Ratings
-- Popularity
-- Runtime
-
-Frequently accessed media is cached in **MongoDB** to reduce API requests and improve performance.
-
-# 🤖 AI Recommendation Module (RAG + Ollama + Qdrant)
-
-## Overview
-
-CineTrack uses a **fully local AI recommendation system** built with **Retrieval-Augmented Generation (RAG)**. The system analyzes user behavior, retrieves semantically similar movies from a vector database, and generates personalized recommendations using a locally hosted LLM.
-
-The architecture avoids external AI APIs, providing a **private, cost-effective, and offline recommendation engine**.
-
----
-
-# 🏗️ AI Architecture
-
-```
-User Library
-(Ratings, Reviews, Lists)
-        │
-        ▼
-Preference Builder
-        │
-        ▼
-Embedding Generation
-(nomic-embed-text)
-        │
-        ▼
-Qdrant Vector Database
-        │
-        ▼
-Semantic Retrieval
-        │
-        ▼
-Prompt Builder
-        │
-        ▼
-Ollama (Qwen2.5)
-        │
-        ▼
-AI Recommendations
+``` text
+                         ┌───────────────────┐
+                         │      React        │
+                         │     Frontend      │
+                         └─────────┬─────────┘
+                                   │
+                              REST API
+                                   │
+                                   ▼
+                         ┌───────────────────┐
+                         │ Node.js + Express │
+                         │      Backend      │
+                         └─────────┬─────────┘
+                                   │
+             ┌─────────────────────┼─────────────────────┐
+             │                     │                     │
+             ▼                     ▼                     ▼
+      ┌────────────┐        ┌────────────┐       ┌──────────────┐
+      │  MongoDB   │        │    TMDB    │       │  AI Module   │
+      │ Application│        │    API     │       │              │
+      │    Data    │        │            │       │              │
+      └────────────┘        └────────────┘       └──────┬───────┘
+                                                        │
+                                                 ┌──────┴──────┐
+                                                 │             │
+                                                 ▼             ▼
+                                           ┌──────────┐  ┌──────────┐
+                                           │  Qdrant  │  │  Ollama  │
+                                           │  Vector  │  │  Local   │
+                                           │    DB    │  │   AI     │
+                                           └──────────┘  └──────────┘
 ```
 
----
+The architecture separates:
 
-# 🛠️ Technologies Used
+-   Presentation
+-   API communication
+-   Authentication
+-   Application data
+-   External media data
+-   Recommendation logic
+-   Vector retrieval
+-   Local AI generation
 
-| Technology | Purpose |
-|------------|---------|
-| Ollama | Local LLM runtime |
-| Qwen2.5:3B | Recommendation generation |
-| nomic-embed-text | Text embeddings |
-| Qdrant | Vector similarity search |
-| Docker | Qdrant deployment |
-| TMDB API | Movie & TV metadata |
-| Node.js / Express | Backend API |
-| MongoDB | User data storage |
+This keeps the project modular and easier to maintain and extend.
 
----
+------------------------------------------------------------------------
 
-# 🔍 How RAG Works
+# 🛠️ Technology Stack
 
-Instead of generating recommendations only from the model's knowledge, CineTrack retrieves relevant movie information first and then uses the LLM to generate recommendations from that context.
+## Frontend
 
-Benefits:
+  Technology     Purpose
+  -------------- ---------------------
+  React          User interface
+  React Router   Client-side routing
+  Tailwind CSS   Responsive styling
+  Axios          API communication
+  Lucide React   UI icons
 
-- Personalized recommendations
-- Reduced hallucinations
-- Explainable results
-- No external API dependency
-- Works with updated TMDB data
+## Backend
 
----
+  Technology   Purpose
+  ------------ ----------------------------
+  Node.js      Backend runtime
+  Express.js   REST API framework
+  MongoDB      Application database
+  Mongoose     MongoDB object modeling
+  JWT          Authentication
+  bcrypt       Password hashing
+  Axios        External API communication
+  dotenv       Environment configuration
 
-# 👤 User Preference Analysis
+## AI / Recommendation
 
-The system creates a semantic profile from:
+  Technology         Purpose
+  ------------------ ----------------------------------------
+  Ollama             Local AI model runtime
+  Qwen2.5            Local recommendation and chat LLM
+  nomic-embed-text   Text embeddings
+  Qdrant             Vector database
+  RAG                Context-aware retrieval and generation
 
-- Ratings
-- Reviews
-- Custom lists
-- Favorite genres
-- Watching behavior
+## External Data
 
-Example:
+### TMDB
 
-```
-User enjoys psychological thrillers,
-science fiction, mystery, and mind-bending stories.
+CineTrack uses **The Movie Database (TMDB)** as its primary source for
+movie and TV media information.
 
-Favorite titles:
-- Interstellar
-- Arrival
-- Dark
-- Blade Runner 2049
-```
+TMDB provides data including:
 
-This profile is converted into an embedding vector for semantic search.
+-   Titles
+-   Posters
+-   Backdrops
+-   Genres
+-   Release dates
+-   Ratings
+-   Overviews
+-   TV information
 
----
+------------------------------------------------------------------------
 
-# 🧠 Vector Knowledge Base
+# 🗄️ Database Design
 
-CineTrack uses TMDB as the movie data source.
+CineTrack uses **MongoDB with Mongoose** for application data.
 
-An ingestion process:
+The primary entities include:
 
-1. Fetches movie metadata from TMDB.
-2. Generates embeddings using `nomic-embed-text`.
-3. Stores vectors in Qdrant.
-
-Each vector contains:
-
-- TMDB ID
-- Title
-- Media Type
-- Genres
-- Overview
-- Rating
-- Popularity
-- Poster Path
-
-Currently, **900+ movie vectors** are indexed.
-
----
-
-# 🔎 Semantic Retrieval Flow
-
-When a user requests recommendations:
-
-1. User preferences are converted into embeddings.
-2. Qdrant performs similarity search.
-3. Relevant movie candidates are retrieved.
-4. Candidates are passed to the LLM.
-5. Qwen2.5 generates structured recommendations.
-
----
-
-# ✨ Prompt Engineering
-
-The recommendation prompt ensures that the AI:
-
-- Uses only retrieved movies
-- Does not invent titles
-- Explains recommendation reasons
-- Returns structured JSON output
-
----
-
-# 🤖 Local AI Model
-
-**LLM:** Qwen2.5:3B  
-**Runtime:** Ollama
-
-Advantages:
-
-- No API costs
-- No rate limits
-- Offline execution
-- Improved privacy
-
----
-
-# 🔌 API Endpoint
-
-### Get Recommendations
-
-```
-GET /api/recommendations
+``` text
+User
+Media
+Library
+Rating
+Review
 ```
 
-Authentication:
+The AI system uses Qdrant separately for semantic media retrieval.
 
+This separation allows MongoDB to handle application and user data while
+Qdrant handles vector-based similarity search.
+
+------------------------------------------------------------------------
+
+# 🔐 Authentication & Security
+
+CineTrack implements authentication using:
+
+-   JWT-based authentication
+-   Password hashing with bcrypt
+-   Protected backend routes
+-   Frontend authentication state
+-   Environment-based configuration
+
+Sensitive configuration such as database credentials, JWT secrets, TMDB
+credentials, and AI configuration is kept outside the source code
+through environment variables.
+
+------------------------------------------------------------------------
+
+# 📁 Project Structure
+
+A simplified high-level structure:
+
+``` text
+CineTrack/
+│
+├── frontend/
+│   └── src/
+│       ├── components/
+│       │   ├── ai/
+│       │   ├── common/
+│       │   ├── home/
+│       │   ├── layout/
+│       │   ├── lists/
+│       │   ├── media/
+│       │   ├── profile/
+│       │   ├── ratings/
+│       │   ├── reviews/
+│       │   └── search/
+│       │
+│       ├── contexts/
+│       ├── pages/
+│       ├── services/
+│       └── utils/
+│
+└── backend/
+    ├── config/
+    ├── controllers/
+    ├── middleware/
+    ├── models/
+    ├── routes/
+    ├── services/
+    │   ├── preference.service.js
+    │   ├── rag.service.js
+    │   ├── ollama.service.js
+    │   ├── recommendation.service.js
+    │   └── tmdbRetriever.service.js
+    ├── utils/
+    └── server.js
 ```
-Authorization: Bearer <JWT Token>
-```
 
-Example Response:
+------------------------------------------------------------------------
 
-```json
-{
-  "success": true,
-  "data": {
-    "recommendations": [
-      {
-        "title": "Blade Runner 2049",
-        "mediaType": "movie",
-        "reason": "Matches your interest in science fiction and psychological storytelling.",
-        "confidence": 0.96
-      }
-    ]
-  }
-}
-```
+# 🧩 Backend Architecture
 
----
+The backend follows a modular, service-oriented structure.
 
-# 🚀 Key Features
+Major responsibilities are separated into:
 
-✅ Fully local AI recommendation engine  
-✅ Retrieval-Augmented Generation (RAG)  
-✅ Semantic vector search using Qdrant  
-✅ Local LLM with Ollama  
-✅ Personalized recommendations  
-✅ Explainable AI responses  
-✅ Docker-based vector database setup  
-✅ Structured JSON output  
+-   **Controllers** --- handle incoming requests and responses
+-   **Routes** --- define API endpoints
+-   **Models** --- represent MongoDB data
+-   **Services** --- contain business and AI logic
+-   **Middleware** --- authentication and request processing
+-   **Utils** --- reusable helper functionality
 
----
+The AI functionality is further separated into services for:
+
+-   Building user preferences
+-   Retrieving relevant media
+-   Generating embeddings
+-   Building prompts
+-   Running the local LLM
+-   Generating recommendations
+-   AI chat
+
+------------------------------------------------------------------------
+
+# 🎯 Project Goals
+
+CineTrack was designed around several engineering and product goals.
+
+### 1. Personalized Discovery
+
+Move beyond generic "trending" recommendations and build recommendations
+around individual taste.
+
+### 2. User-Centric Tracking
+
+Give users control over their ratings, reviews, lists, and personal
+media organization.
+
+### 3. Explainable Recommendations
+
+Show not only what was recommended, but also **why the user may like
+it**.
+
+### 4. Local AI
+
+Explore a locally running AI architecture instead of depending entirely
+on external AI APIs.
+
+### 5. Semantic Retrieval
+
+Use embeddings and vector similarity to discover meaningful
+relationships between user preferences and media.
+
+### 6. Modular Architecture
+
+Separate frontend, backend, database, external APIs, and AI services to
+keep the system maintainable.
+
+### 7. Responsive User Experience
+
+Provide a clean, minimal interface that works across desktop, tablet,
+and mobile devices.
+
+------------------------------------------------------------------------
+
+# 📊 Current Project Status
+
+CineTrack currently includes the core full-stack functionality:
+
+-   ✅ Authentication
+-   ✅ TMDB integration
+-   ✅ Movie search
+-   ✅ TV search
+-   ✅ Movie details
+-   ✅ TV details
+-   ✅ User profiles
+-   ✅ Custom lists
+-   ✅ Shareable lists
+-   ✅ Ratings
+-   ✅ Reviews
+-   ✅ Trending content
+-   ✅ Responsive React interface
+-   ✅ Local Ollama integration
+-   ✅ Embedding generation
+-   ✅ Qdrant semantic retrieval
+-   ✅ RAG recommendation pipeline
+-   ✅ AI recommendation interface
+-   ✅ AI chat interface
+
+------------------------------------------------------------------------
 
 # 🔮 Future Improvements
 
-- Hybrid search (semantic + metadata filtering)
-- TV season-specific recommendations
-- Recommendation history tracking
-- User feedback learning loop
-- Larger local models
-- Personalized ranking algorithms
+Potential future improvements include:
 
----
+-   More advanced recommendation ranking
+-   Improved cold-start recommendations
+-   More sophisticated preference weighting
+-   Better AI conversation memory
+-   Recommendation feedback loops
+-   Watch history tracking
+-   Social features
+-   More advanced public/shared list functionality
+-   Recommendation evaluation metrics
+-   Improved vector retrieval strategies
+-   More advanced personalization
 
-# 🔒 Security Features
+------------------------------------------------------------------------
 
-The backend incorporates several security practices:
+# 💡 Technical Highlights
 
-- 🔐 Password hashing using **bcrypt.js**
-- 🔑 JWT-based authentication
-- 🛡️ Protected API endpoints using authentication middleware
-- ✅ Unique username and email validation
-- 🗑️ Cascade deletion of user-related data during account deletion
-- ⚙️ Environment variables for sensitive configuration values
+CineTrack demonstrates practical implementation of several modern
+software engineering concepts:
 
----
+``` text
+Full-Stack Development
+│
+├── React
+├── Node.js
+├── Express
+└── MongoDB
 
-# 🧪 API Testing
+API Integration
+│
+└── TMDB
 
-All backend APIs were tested using **Thunder Client**.
+Authentication
+│
+├── JWT
+└── bcrypt
 
-The following functionalities were verified:
+AI Engineering
+│
+├── Ollama
+├── Embeddings
+├── Qdrant
+├── Vector Search
+└── RAG
 
-- ✅ User Registration
-- ✅ User Login
-- ✅ JWT Authentication
-- ✅ CRUD Operations
-- ✅ TMDB API Integration
-- ✅ Protected Routes
-- ✅ MongoDB Data Storage
-- ✅ AI Recommendation Endpoint
+Software Architecture
+│
+├── Service Layer
+├── REST APIs
+├── Modular Components
+└── Separation of Concerns
+```
 
----
+------------------------------------------------------------------------
 
-# 📝 Conclusion
+# 🧪 Example User Journey
 
-The CineTrack backend was successfully developed using a modular RESTful architecture. It provides secure authentication, cloud database integration, movie and TV show management, personalized user libraries, ratings, reviews, TMDB integration, and AI-powered recommendations.
+A typical CineTrack experience can look like:
 
-The project emphasizes scalability, maintainability, and clean software design principles. It is fully prepared for frontend integration using **React**, enabling the development of a complete full-stack application.
+``` text
+Sign Up
+   ↓
+Explore Trending Movies / TV
+   ↓
+Search for a Title
+   ↓
+Open Media Details
+   ↓
+Rate / Review the Title
+   ↓
+Add It to a Personal List
+   ↓
+Share the List with Friends
+   ↓
+Continue Building Viewing Preferences
+   ↓
+Generate AI Recommendations
+   ↓
+Receive Personalized Titles + Explanations
+   ↓
+Ask CineTrack AI for More Recommendations
+```
+
+This creates a continuous loop where user interaction contributes to a
+richer understanding of their preferences.
+
+------------------------------------------------------------------------
+
+# ⚙️ Getting Started
+
+## Prerequisites
+
+Make sure the following are installed:
+
+-   Node.js
+-   npm
+-   MongoDB / MongoDB Atlas
+-   Ollama
+-   Qdrant
+-   A TMDB API access token
+
+The local AI environment should have the required models available
+through Ollama.
+
+Example:
+
+``` bash
+ollama pull qwen2.5:3b
+ollama pull nomic-embed-text
+```
+
+## 1. Clone the Repository
+
+``` bash
+git clone <your-repository-url>
+cd CineTrack
+```
+
+## 2. Install Frontend Dependencies
+
+``` bash
+cd frontend
+npm install
+```
+
+## 3. Install Backend Dependencies
+
+``` bash
+cd ../backend
+npm install
+```
+
+## 4. Configure Environment Variables
+
+Create the required `.env` files for the backend and provide your own
+configuration values for:
+
+``` text
+MONGODB_URI=
+JWT_SECRET=
+TMDB_ACCESS_TOKEN=
+OLLAMA_URL=
+QDRANT_URL=
+```
+
+Do not commit secrets or credentials to the repository.
+
+## 5. Start Qdrant
+
+Run Qdrant locally or connect to an existing Qdrant instance.
+
+## 6. Start Ollama
+
+Make sure Ollama is running and the required models are available.
+
+## 7. Start the Backend
+
+``` bash
+cd backend
+npm run dev
+```
+
+## 8. Start the Frontend
+
+In another terminal:
+
+``` bash
+cd frontend
+npm run dev
+```
+
+The exact scripts may vary depending on the project's current
+`package.json` configuration.
+
+------------------------------------------------------------------------
+
+# 🌟 What This Project Demonstrates
+
+CineTrack brings together several areas of modern application
+development in a single project:
+
+**Frontend Engineering**
+
+React, routing, reusable components, responsive UI, state management,
+and API integration.
+
+**Backend Engineering**
+
+Node.js, Express, REST APIs, authentication, MongoDB, service-oriented
+architecture, and external API integration.
+
+**AI Engineering**
+
+Embeddings, vector databases, semantic retrieval, RAG, local LLM
+inference, prompt construction, and AI-powered recommendations.
+
+**Product Thinking**
+
+Personal libraries, ratings, reviews, social list sharing, explainable
+recommendations, and a user-centered discovery experience.
+
+------------------------------------------------------------------------
+
+# 👨‍💻 Project
+
+**CineTrack** is an ongoing full-stack project focused on combining
+modern web development with practical local AI engineering.
+
+> **Discover. Track. Rate. Review. Share. Get recommendations that
+> actually feel personal.**
+
+------------------------------------------------------------------------
+
+## 📄 License
+
+This project is currently intended for educational and development
+purposes.
