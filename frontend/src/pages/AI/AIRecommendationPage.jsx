@@ -93,7 +93,7 @@ function AIRecommendationPage() {
             <Navbar />
 
 
-            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:gap-8 sm:px-6 sm:py-8 lg:gap-10">
+            <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 pb-10 pt-24 sm:px-6 sm:pt-28">
 
 
                 {/* =========================================
