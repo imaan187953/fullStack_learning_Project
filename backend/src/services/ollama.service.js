@@ -2,6 +2,11 @@ const ollama = require("../config/ollama");
 
 /**
  * Generate embedding using nomic-embed-text
+ *
+ * IMPORTANT:
+ * Keep this model unchanged for now because
+ * the existing Qdrant vectors were generated
+ * using this embedding model.
  */
 const generateEmbedding = async (text) => {
   try {
@@ -22,7 +27,7 @@ const generateEmbedding = async (text) => {
 };
 
 /**
- * Generate AI recommendations using Qwen
+ * Generate AI response using Ollama Cloud
  */
 const generateResponse = async (prompt) => {
   try {
@@ -31,7 +36,8 @@ const generateResponse = async (prompt) => {
     }
 
     const response = await ollama.chat({
-      model: "qwen2.5:3b",
+      // Ollama Cloud model
+      model: "gemma4",
 
       messages: [
         {
